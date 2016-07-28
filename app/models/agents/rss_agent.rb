@@ -14,7 +14,7 @@ module Agents
       <<-MD
         The RSS Agent consumes RSS feeds and emits events when they change.
 
-        This agent, using [Feedjira](https://github.com/feedjira/feedjira) as a base, can parse various types RSS and Atom feeds and has some special handlers for FeedBurner, iTunes RSS, and so on.  However, supported fields are limited by its general and abstract nature.  For complex feeds with additional field types, we recommend using a WebsiteAgent.  See [this example](https://github.com/cantino/huginn/wiki/Agent-configuration-examples#itunes-trailers).
+        This agent, using [Feedjira](https://github.com/feedjira/feedjira) as a base, can parse various types of RSS and Atom feeds and has some special handlers for FeedBurner, iTunes RSS, and so on.  However, supported fields are limited by its general and abstract nature.  For complex feeds with additional field types, we recommend using a WebsiteAgent.  See [this example](https://github.com/cantino/huginn/wiki/Agent-configuration-examples#itunes-trailers).
 
         If you want to *output* an RSS feed, use the DataOutputAgent.
 
