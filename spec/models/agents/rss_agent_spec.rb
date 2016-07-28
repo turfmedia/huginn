@@ -92,6 +92,8 @@ describe Agents::RssAgent do
                                              }
                                           ])
       expect(first.payload['authors']).to eq(["cantino (https://github.com/cantino)"])
+      expect(first.payload['date_published']).to be_nil
+      expect(first.payload['last_updated']).to eq("2014-07-16T22:26:22-07:00")
       expect(last.payload['url']).to eq("https://github.com/cantino/huginn/commit/d465158f77dcd9078697e6167b50abbfdfa8b1af")
       expect(last.payload['urls']).to eq(["https://github.com/cantino/huginn/commit/d465158f77dcd9078697e6167b50abbfdfa8b1af"])
       expect(last.payload['links']).to eq([
@@ -102,6 +104,8 @@ describe Agents::RssAgent do
                                               }
                                           ])
       expect(last.payload['authors']).to eq(["CloCkWeRX (https://github.com/CloCkWeRX)"])
+      expect(last.payload['date_published']).to be_nil
+      expect(last.payload['last_updated']).to eq("2014-07-01T16:37:47+09:30")
     end
 
     it "should emit items as events in the order specified in the events_order option" do
@@ -217,6 +221,13 @@ describe Agents::RssAgent do
   context "parsing feeds" do
     before do
       @valid_options['url'] = 'http://onethingwell.org/rss'
+    end
+
+    it "captures timestamps normalized in the ISO 8601 format" do
+      agent.check
+      first, *, third = agent.events.take(3)
+      expect(first.payload['date_published']).to eq('2015-08-20T17:00:10+01:00')
+      expect(third.payload['date_published']).to eq('2015-08-20T13:00:07+01:00')
     end
 
     it "captures multiple categories" do

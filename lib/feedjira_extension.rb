@@ -191,12 +191,43 @@ module FeedjiraExtension
     end
   end
 
+  module HasTimestamps
+    attr_reader :published, :updated
+
+    # Keep the "oldest" publish time found
+    def published=(value)
+      parsed = parse_datetime(value)
+      @published = parsed if !@published || parsed < @published
+    end
+
+    # Keep the most recent update time found
+    def updated=(value)
+      parsed = parse_datetime(value)
+      @updated = parsed if !@updated || parsed > @updated
+    end
+
+    def date_published
+      published.try(:iso8601)
+    end
+
+    def last_updated
+      (updated || published).try(:iso8601)
+    end
+
+    private
+
+    def parse_datetime(string)
+      DateTime.parse(string) rescue nil
+    end
+  end
+
   module FeedEntryExtensions
     def self.included(mod)
       mod.module_exec do
         include HasAuthors
         include HasEnclosure
         include HasLinks
+        include HasTimestamps
       end
     end
 
@@ -211,6 +242,7 @@ module FeedjiraExtension
         include HasAuthors
         include HasEnclosure
         include HasLinks
+        include HasTimestamps
 
         element  :id, as: :feed_id
         element  :generator

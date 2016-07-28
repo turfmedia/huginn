@@ -66,8 +66,8 @@ module Agents
               "copyright": "...",
               "icon": "http://example.com/icon.png",
               "authors": [ "..." ],
-              "date_published": "Thu, 11 Sep 2014 01:30:00 -0700",
-              "last_updated": "Thu, 11 Sep 2014 01:30:00 -0700"
+              "date_published": "2014-09-11T01:30:00-07:00",
+              "last_updated": "2014-09-11T01:30:00-07:00"
             },
             "id": "829f845279611d7925146725317b868d",
             "url": "http://example.com/...",
@@ -83,12 +83,14 @@ module Agents
             "enclosure": {
               "url" => "http://example.com/file.mp3", "type" => "audio/mpeg", "length" => "123456789"
             },
-            "date_published": "2014-09-11 01:30:00 -0700",
-            "last_updated": "Thu, 11 Sep 2014 01:30:00 -0700"
+            "date_published": "2014-09-11T01:30:00-0700",
+            "last_updated": "2014-09-11T01:30:00-0700"
           }
 
-      The `feed` key is present only if `include_feed_info` is true.
+      Some notes:
 
+      - The `feed` key is present only if `include_feed_info` is set to true.
+      - Timestamps are converted to the ISO 8601 format.
     MD
 
     def working?
@@ -182,8 +184,8 @@ module Agents
         generator: feed.generator,
         icon: feed.icon,
         authors: feed.authors,
-        date_published: feed.published,
-        last_updated: feed.updated || feed.published,
+        date_published: feed.date_published,
+        last_updated: feed.last_updated,
       }
     end
 
@@ -200,8 +202,8 @@ module Agents
         enclosure: entry.enclosure,
         authors: entry.authors,
         categories: Array(entry.try(:categories)),
-        date_published: entry.published,
-        last_updated: entry.try(:updated) || entry.published,
+        date_published: entry.date_published,
+        last_updated: entry.last_updated,
       }
     end
 
