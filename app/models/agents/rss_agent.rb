@@ -91,6 +91,7 @@ module Agents
 
       - The `feed` key is present only if `include_feed_info` is set to true.
       - Timestamps are converted to the ISO 8601 format.
+      - Each element in `authors` is a string normalized in the format "*name* <*email*> (*url*)", where each space-separated part is optional.
     MD
 
     def working?
