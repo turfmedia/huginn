@@ -98,6 +98,26 @@ describe Agents::PublisherTasks do
 
       @checker.receive(@events)
     end
+
+    it 'createns new event if given events is a second event from publisher/api and they both from different packages' do
+      q2_event = Event.new payload: @valid_params.merge(package_type: 'q2')
+      q2_event.agent = @webhook
+      q2_event.user  = @webhook.user
+      q2_event.save!
+
+      js2_event = Event.new payload: @valid_params.merge(package_type: 'js2')
+      js2_event.agent = @webhook
+      js2_event.user  = @webhook.user
+      js2_event.save!
+      @events.push(js2_event)
+
+      allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
+        mock = double
+        expect(mock).to receive(:launch!)
+        mock
+      end
+      expect {@checker.receive(@events)}.to change { Event.count }.by(1)
+    end
   end
 
   describe "#working?" do

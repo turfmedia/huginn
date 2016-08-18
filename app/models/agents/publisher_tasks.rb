@@ -1,5 +1,6 @@
 module Agents
   class PublisherTasks < Agent
+    # docs for how to create own Agent - https://github.com/cantino/huginn/wiki/Creating-a-new-agent
     cannot_be_scheduled!
 
     description <<-MD
@@ -10,6 +11,7 @@ module Agents
       { date: Date.tomorrow }
     end
 
+    # 
     def validate_options
       errors.add(:base, 'date is required') unless options['date'].present?
     end
@@ -25,11 +27,17 @@ module Agents
       event = incoming_events.first
       return if event.blank? 
       return if Event.where(agent_id: event.agent_id).select {|e| e.payload[:date] == event.payload[:date] }.map(&:payload).uniq.count < 2
-      Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow).launch!
+      date = Date.tomorrow.to_s
+      if Orchestrator::Tasks::Pipelines::Gazette.new(date).launch!
+        check(date: date, status: "ok")
+      else
+        check(date: date, status: "failure")
+      end
     end
 
-    def check
-      create_event :payload => interpolated
+    def check(options=nil)
+      options ||= interpolated
+      create_event :payload => options
     end
 
   end

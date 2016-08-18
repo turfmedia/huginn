@@ -87,7 +87,7 @@ module Orchestrator
                 @courses_info,
                 @js2
               ).json
-              @pdf_content = Orchestrator::Tasks::Processors::PdfManager.new(@json, 'La Gazette Turf').content
+              @pdf_content = Orchestrator::Tasks::Processors::PdfManager.new(@json, 'La Gazette Turf').content.force_encoding('UTF-8') # it happens only in huginn. in pure ruby scripts I don't have any problems with encoding.
               @uploader = Orchestrator::Tasks::Processors::AmazonUploader.new("La Gazette Turf #{@date}", @pdf_content)
               if @uploader.upload!
                 @link_to_pdf = @uploader.public_url
