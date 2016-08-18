@@ -51,7 +51,6 @@ module Orchestrator
         # @param [String, Date] date which will be used to generate tips from JS2, Q2 packages
         # @return [Orchestrator::Tasks::Pipeline::Gazette]
         def initialize(date)
-          byebug
           @date = date
         end
 

@@ -1,0 +1,122 @@
+{
+  "date":"2016-05-02",
+  "pronostic":"1 - 2 - 13 - 14 - 8 - 11 - 3 - 15",
+  "race_comment":"un commentaire court",
+  "partants":[
+    {
+      "note":86,
+      "numero":1,
+      "nom":"Lotus Garden",
+      "comment":"Un commentaire un peu plus long pour savoir comment",
+      "group":"0"
+    },
+    {
+      "note":75,
+      "numero":2,
+      "nom":"Catch Dream",
+      "comment":"test2",
+      "group":"1"
+    },
+    {
+      "note":73,
+      "numero":13,
+      "nom":"Zariyano",
+      "comment":"",
+      "group":"1"
+    },
+    {
+      "note":73,
+      "numero":14,
+      "nom":"Shaslika",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":73,
+      "numero":8,
+      "nom":"Zoutia",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":72,
+      "numero":11,
+      "nom":"Hippolyte",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":71,
+      "numero":3,
+      "nom":"Rakhsh",
+      "comment":"test3",
+      "group":"2"
+    },
+    {
+      "note":70,
+      "numero":15,
+      "nom":"Well Fleeced",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":68,
+      "numero":10,
+      "nom":"Iron Spirit",
+      "comment":"",
+      "group":"1"
+    },
+    {
+      "note":68,
+      "numero":7,
+      "nom":"Indian Walk",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":64,
+      "numero":12,
+      "nom":"Pekas",
+      "comment":"",
+      "group":"2"
+    },
+    {
+      "note":63,
+      "numero":5,
+      "nom":"Sisyphe",
+      "comment":"test5",
+      "group":"0"
+    },
+    {
+      "note":62,
+      "numero":16,
+      "nom":"Muhtaker",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":60,
+      "numero":9,
+      "nom":"Romantic Pur",
+      "comment":"",
+      "group":"0"
+    },
+    {
+      "note":59,
+      "numero":4,
+      "nom":"Krispen",
+      "comment":"test4",
+      "group":"1"
+    },
+    {
+      "note":52,
+      "numero":6,
+      "nom":"Mogadishio",
+      "comment":"test13",
+      "group":"2"
+    }
+  ],
+  "cdj":"R1C1 Deauville Non Partant",
+  "js":"R1 VICHY 417 VERTIGO DU KLAU\r\nR1 VICHY 803 ALTESSE KILY \r\nR3 LISIEUX 602 VERTIGO",
+  "race_title":"R1C2 - Prix de l'Ile de France à Maisons Laffitte <b>13:47</b> — <b>1600m</b>"
+}

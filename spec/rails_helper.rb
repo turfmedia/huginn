@@ -1,5 +1,12 @@
 ENV["RAILS_ENV"] ||= 'test'
 
+ENV['ENVIRONMENT']    = 'test'
+ENV['AWS_REGION']     = 'REGION'
+ENV['AWS_BUCKET']     = 'BUCKET'
+ENV['AWS_ACCESS_KEY'] = 'ACCESS_KEY'
+ENV['AWS_SECRET']     = 'AWS_SECRET'
+
+
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails'
@@ -12,6 +19,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rr'
 require 'webmock/rspec'
+
+Aws.config.update(stub_responses: true) #This test mode uses in amazon_uploader_spec.rb
 
 WebMock.disable_net_connect!
 
@@ -30,7 +39,7 @@ Shoulda::Matchers.configure do |config|
 end
 
 RSpec.configure do |config|
-  # config.mock_with :rr
+  config.mock_with :rr
   config.mock_with :rspec do |mocks| #FIXME return :rrr because to many specs are failure
     mocks.verify_partial_doubles = true
   end

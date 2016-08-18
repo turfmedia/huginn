@@ -69,6 +69,12 @@ gem 'listen', '~> 3.0.5', require: false
 # S3Agent
 gem 'aws-sdk-core', '~> 2.2.15'
 
+#Upload pdf files to AWS
+gem 'aws-sdk', '~> 2'
+gem 'r18n-core'
+
+
+
 # Optional Services.
 gem 'omniauth-37signals'          # BasecampAgent
 gem 'omniauth-wunderlist', github: 'wunderlist/omniauth-wunderlist', ref: 'd0910d0396107b9302aa1bc50e74bb140990ccb8'

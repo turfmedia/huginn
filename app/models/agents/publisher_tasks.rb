@@ -18,11 +18,12 @@ module Agents
       !recent_error_logs?
     end
 
+    # Launch Orchestrator::Tasks::Pipelines::Gazette pipeline.
+    # It does nothing if either incoming_events are blank or there are not any information about another package or we have information about other packages but for another date.
+    # It runs pipeline only if today we get two packages (js2, q2) from publisher api for the same date.
     def receive(incoming_events)
-      # byebug
       event = incoming_events.first
       return if event.blank? 
-      # byebug
       return if Event.where(agent_id: event.agent_id).select {|e| e.payload[:date] == event.payload[:date] }.map(&:payload).uniq.count < 2
       Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow).launch!
     end
@@ -31,9 +32,5 @@ module Agents
       create_event :payload => interpolated
     end
 
-    private
-      def handle(event)
-        
-      end
   end
 end
