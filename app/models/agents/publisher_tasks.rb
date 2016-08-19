@@ -31,7 +31,7 @@ module Agents
       gazette = Orchestrator::Tasks::Pipelines::Gazette.new(date)
 
       if gazette.launch!
-        create_event payload: { date: date, status: "ok", pdf_link: gazette.pdf_link }
+        create_event payload: { date: date, status: "ok", pdf_link: gazette.link_to_pdf }
       else
         create_event payload: { date: date, status: "failure" }
       end

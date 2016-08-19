@@ -32,7 +32,7 @@ describe Agents::PublisherTasks do
     end
 
     it 'does not run Orchestrator::Tasks::Pipelines::Gazette if events are blank' do
-      expect(Orchestrator::Tasks::Pipelines::Gazette).to_not receive(:new)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
       @checker.receive(@events)
     end
 
@@ -42,7 +42,7 @@ describe Agents::PublisherTasks do
       js2_event.user  = @webhook.user
       js2_event.save!
       @events.push(js2_event)
-      expect(Orchestrator::Tasks::Pipelines::Gazette).to_not receive(:new)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
       @checker.receive(@events)
     end
 
@@ -58,7 +58,8 @@ describe Agents::PublisherTasks do
       q2_event_again.save!
       @events.push(q2_event_again)
 
-      expect(Orchestrator::Tasks::Pipelines::Gazette).to_not receive(:new)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+
       @checker.receive(@events)
     end
 
@@ -74,7 +75,8 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      expect(Orchestrator::Tasks::Pipelines::Gazette).to_not receive(:new)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+
       @checker.receive(@events)
     end
 
@@ -90,12 +92,12 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
-        mock = double
-        expect(mock).to receive(:launch!)
-        mock
-      end
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      stub(fake_object).launch!{ true }.times(1)
 
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+        fake_object
+      end
       @checker.receive(@events)
     end
 
@@ -111,11 +113,13 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
-        mock = double
-        allow(mock).to receive(:launch!).and_return(true)
-        mock
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      stub(fake_object).launch! { true }
+
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+        fake_object
       end
+
       expect {@checker.receive(@events)}.to change { Event.count }.by(1)
     end
 
@@ -131,11 +135,12 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
-        mock = double
-        allow(mock).to receive(:launch!).and_return(true)
-        allow(mock).to receive(:pdf_link).and_return('pdf_link')
-        mock
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      stub(fake_object).launch! { true } 
+      stub(fake_object).link_to_pdf { 'pdf_link' }
+
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+        fake_object
       end
 
       @checker.receive(@events)
