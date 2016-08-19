@@ -113,10 +113,34 @@ describe Agents::PublisherTasks do
 
       allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
         mock = double
-        expect(mock).to receive(:launch!)
+        allow(mock).to receive(:launch!).and_return(true)
         mock
       end
       expect {@checker.receive(@events)}.to change { Event.count }.by(1)
+    end
+
+    it 'creates new event which contains information about pdf_link' do
+      q2_event = Event.new payload: @valid_params.merge(package_type: 'q2')
+      q2_event.agent = @webhook
+      q2_event.user  = @webhook.user
+      q2_event.save!
+
+      js2_event = Event.new payload: @valid_params.merge(package_type: 'js2')
+      js2_event.agent = @webhook
+      js2_event.user  = @webhook.user
+      js2_event.save!
+      @events.push(js2_event)
+
+      allow(Orchestrator::Tasks::Pipelines::Gazette).to receive(:new) do
+        mock = double
+        allow(mock).to receive(:launch!).and_return(true)
+        allow(mock).to receive(:pdf_link).and_return('pdf_link')
+        mock
+      end
+
+      @checker.receive(@events)
+      just_created_event = Event.find_by_agent_id(@checker.id)
+      expect(just_created_event.payload[:pdf_link]).to eq('pdf_link')
     end
   end
 

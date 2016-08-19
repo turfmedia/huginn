@@ -28,16 +28,17 @@ module Agents
       return if event.blank? 
       return if Event.where(agent_id: event.agent_id).select {|e| e.payload[:date] == event.payload[:date] }.map(&:payload).uniq.count < 2
       date = Date.tomorrow.to_s
-      if Orchestrator::Tasks::Pipelines::Gazette.new(date).launch!
-        check(date: date, status: "ok")
+      gazette = Orchestrator::Tasks::Pipelines::Gazette.new(date)
+
+      if gazette.launch!
+        create_event payload: { date: date, status: "ok", pdf_link: gazette.pdf_link }
       else
-        check(date: date, status: "failure")
+        create_event payload: { date: date, status: "failure" }
       end
     end
 
-    def check(options=nil)
-      options ||= interpolated
-      create_event :payload => options
+    def check
+      create_event :payload => interpolated
     end
 
   end

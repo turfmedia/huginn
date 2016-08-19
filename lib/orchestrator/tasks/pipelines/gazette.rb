@@ -46,7 +46,7 @@ module Orchestrator
       # step #10) send this email to ComCenter
       class Gazette
 
-        attr_reader :json
+        attr_reader :json, :link_to_pdf
 
         # @param [String, Date] date which will be used to generate tips from JS2, Q2 packages
         # @return [Orchestrator::Tasks::Pipeline::Gazette]
