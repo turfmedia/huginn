@@ -32,7 +32,7 @@ describe Agents::PublisherTasks do
     end
 
     it 'does not run Orchestrator::Tasks::Pipelines::Gazette if events are blank' do
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]).times(0)
       @checker.receive(@events)
     end
 
@@ -42,7 +42,7 @@ describe Agents::PublisherTasks do
       js2_event.user  = @webhook.user
       js2_event.save!
       @events.push(js2_event)
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]).times(0)
       @checker.receive(@events)
     end
 
@@ -58,7 +58,7 @@ describe Agents::PublisherTasks do
       q2_event_again.save!
       @events.push(q2_event_again)
 
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]).times(0)
 
       @checker.receive(@events)
     end
@@ -75,7 +75,7 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s).times(0)
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]).times(0)
 
       @checker.receive(@events)
     end
@@ -92,10 +92,10 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date])
       stub(fake_object).launch!{ true }.times(1)
 
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]) do
         fake_object
       end
       @checker.receive(@events)
@@ -113,10 +113,10 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date])
       stub(fake_object).launch! { true }
 
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]) do
         fake_object
       end
 
@@ -135,11 +135,11 @@ describe Agents::PublisherTasks do
       js2_event.save!
       @events.push(js2_event)
 
-      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(Date.tomorrow.to_s)
+      fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date])
       stub(fake_object).launch! { true } 
       stub(fake_object).link_to_pdf { 'pdf_link' }
 
-      stub(Orchestrator::Tasks::Pipelines::Gazette).new(Date.tomorrow.to_s) do
+      stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date]) do
         fake_object
       end
 

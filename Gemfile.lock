@@ -58,6 +58,16 @@ GIT
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
 
+GIT
+  remote: https://github.com/sbusso/publisher_task.git
+  revision: 01d70e87dfe5c90d2c0d153d082e613ca892a765
+  specs:
+    orchestrator (1.0.0)
+      aws-sdk (~> 2.5.1)
+      dotenv
+      google_drive
+      r18n-core
+
 PATH
   remote: vendor/gems/dotenv-2.0.1
   specs:
@@ -110,12 +120,12 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    aws-sdk (2.5.1)
-      aws-sdk-resources (= 2.5.1)
-    aws-sdk-core (2.5.1)
+    aws-sdk (2.5.5)
+      aws-sdk-resources (= 2.5.5)
+    aws-sdk-core (2.5.5)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.5.1)
-      aws-sdk-core (= 2.5.1)
+    aws-sdk-resources (2.5.5)
+      aws-sdk-core (= 2.5.5)
     bcrypt (3.1.10)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -249,6 +259,11 @@ GEM
       retriable (>= 1.4)
       signet (>= 0.5.0)
       uuidtools (>= 2.1.0)
+    google_drive (1.0.6)
+      google-api-client (>= 0.7.0, < 0.9)
+      nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
+      oauth (>= 0.3.6)
+      oauth2 (>= 0.5.0)
     guard (2.13.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, <= 4.0)
@@ -597,7 +612,6 @@ PLATFORMS
 
 DEPENDENCIES
   ace-rails-ap (~> 2.0.1)
-  aws-sdk (= 2.5.1)
   better_errors (~> 1.1)
   binding_of_caller
   bootstrap-kaminari-views (~> 0.0.3)
@@ -659,13 +673,13 @@ DEPENDENCIES
   omniauth-tumblr
   omniauth-twitter
   omniauth-wunderlist!
+  orchestrator!
   pg (~> 0.18.3)
   poltergeist
   protected_attributes (~> 1.0.8)
   pry-byebug
   pry-rails
   quiet_assets
-  r18n-core
   rack (> 1.5.0)
   rack-livereload (~> 0.3.16)
   rails (= 4.2.7.1)

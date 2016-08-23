@@ -68,11 +68,10 @@ gem 'listen', '~> 3.0.5', require: false
 
 # S3Agent
 # gem 'aws-sdk-core', '~> 2.2.15'
-gem 'aws-sdk', '2.5.1'
+# gem 'aws-sdk', '2.5.1'
 
-#Upload pdf files to AWS
-gem 'r18n-core'
-
+gem 'orchestrator', git: 'https://github.com/sbusso/publisher_task.git'
+# gem 'orchestrator', path: '/Users/valexl/workspace/turfmedia/gems/orchestrator'
 
 
 # Optional Services.
