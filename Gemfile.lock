@@ -59,7 +59,7 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: https://github.com/sbusso/publisher_task.git
+  remote: git@github.com:sbusso/publisher_task.git
   revision: 01d70e87dfe5c90d2c0d153d082e613ca892a765
   specs:
     orchestrator (1.0.0)

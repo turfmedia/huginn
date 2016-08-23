@@ -70,7 +70,7 @@ gem 'listen', '~> 3.0.5', require: false
 # gem 'aws-sdk-core', '~> 2.2.15'
 # gem 'aws-sdk', '2.5.1'
 
-gem 'orchestrator', git: 'https://github.com/sbusso/publisher_task.git'
+gem 'orchestrator', git: 'git@github.com:sbusso/publisher_task.git'
 # gem 'orchestrator', path: '/Users/valexl/workspace/turfmedia/gems/orchestrator'
 
 
