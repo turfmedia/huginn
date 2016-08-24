@@ -4,8 +4,6 @@ describe Agents::PublisherTasks do
   before do
     Event.destroy_all
     Agent.destroy_all
-    stub_request(:get, /parse/).to_return(:body => File.read(Rails.root.join("spec/data_fixtures/adioso_parse.json")), :status => 200, :headers => {"Content-Type" => "text/json"})
-    stub_request(:get, /fares/).to_return(:body => File.read(Rails.root.join("spec/data_fixtures/adioso_fare.json")),  :status => 200, :headers => {"Content-Type" => "text/json"})
     @valid_params = {
                       date: '2016-08-15',
                       package_type: 'js2'

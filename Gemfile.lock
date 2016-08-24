@@ -60,12 +60,12 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: 4303539696d1e12e4be5aeeb4f30e64b6c8c76ed
+  revision: cdbbc2e93301949a974609d85ae7d0847ee1829b
   specs:
-    orchestrator (1.0.1)
+    orchestrator (1.0.2)
       aws-sdk (~> 2.5.1)
       dotenv
-      google_drive
+      google_drive (~> 1.0.6)
       r18n-core
 
 PATH
@@ -120,12 +120,12 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    aws-sdk (2.5.5)
-      aws-sdk-resources (= 2.5.5)
-    aws-sdk-core (2.5.5)
+    aws-sdk (2.5.6)
+      aws-sdk-resources (= 2.5.6)
+    aws-sdk-core (2.5.6)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.5.5)
-      aws-sdk-core (= 2.5.5)
+    aws-sdk-resources (2.5.6)
+      aws-sdk-core (= 2.5.6)
     bcrypt (3.1.10)
     better_errors (1.1.0)
       coderay (>= 1.0.0)

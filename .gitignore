@@ -28,3 +28,4 @@ manifest.yml
 config/unicorn.rb
 db/schema.rb
 .byebug_history
+config.json
