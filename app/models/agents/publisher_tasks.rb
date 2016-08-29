@@ -12,40 +12,41 @@ module Agents
       { 
         date: '',
         package_type: '',
+        pipeline: 'Gazette',
+        packages: ['js2', 'q2']
       }
     end
 
     # 
     def validate_options
-      errors.add(:base, 'date is required') unless options['date'].present?
+      errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
+      errors.add(:base, 'packages is required') unless options['packages'].present?
     end
 
     def working?
       !recent_error_logs?
     end
 
-    # Launch Orchestrator::Tasks::Pipelines::Gazette pipeline.
+    # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
     # It does nothing if either incoming_events are blank or there are not any information about another package or we have information about other packages but for another date.
-    # It runs pipeline only if today we get two packages (js2, q2) from publisher api for the same date.
+    # It runs pipeline only if today we get all packages from options[:packages] (js2, q2 for example) from publisher api for the same date.
     def receive(incoming_events)
       event = incoming_events.first
       return if event.blank? 
       return if (not dry_run?) && Event.where(agent_id: event.agent_id).select do |e| 
         begin
-          e.payload[:date].to_date == event.payload[:date].to_date 
+          e.payload[:date].to_date == event.payload[:date].to_date && self.options[:packages].include?(event.payload[:package_type])
         rescue Exception => e
           false
         end
-      end.map(&:payload).uniq.count < 2
+      end.map(&:payload).uniq.count < self.options[:packages].count
 
       date = event.payload[:date] || Date.tomorrow.to_s
-      gazette = Orchestrator::Tasks::Pipelines::Gazette.new(date)
+      klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
+      pipeline = klass.new(date)
 
-      if gazette.launch!
-        create_event payload: { date: date, status: "ok", pdf_link: gazette.link_to_pdf }
-      else
-        event = create_event payload: { date: date, status: "failure" }
-      end
+      pipeline.launch!
+      create_event payload: pipeline.response
     end
 
     def check
