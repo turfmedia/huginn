@@ -61,7 +61,7 @@ GIT
 PATH
   remote: /Users/valexl/workspace/turfmedia/gems/orchestrator
   specs:
-    orchestrator (1.1.0)
+    orchestrator (1.2.0)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
