@@ -17,10 +17,15 @@ module Agents
       }
     end
 
-    # 
+    # check that pipeline_name and packages are given by user
     def validate_options
       errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
       errors.add(:base, 'packages is required') unless options['packages'].present?
+    end
+
+    # @return [Array] list of packages from options
+    def packages
+      self.options[:packages].split(",").map(&:strip)
     end
 
     def working?
@@ -35,11 +40,11 @@ module Agents
       return if event.blank? 
       return if (not dry_run?) && Event.where(agent_id: event.agent_id).select do |e| 
         begin
-          e.payload[:date].to_date == event.payload[:date].to_date && self.options[:packages].include?(event.payload[:package_type])
+          e.payload[:date].to_date == event.payload[:date].to_date && packages.include?(event.payload[:package_type])
         rescue Exception => e
           false
         end
-      end.map(&:payload).uniq.count < self.options[:packages].count
+      end.map(&:payload).uniq.count < packages.count
 
       date = event.payload[:date] || Date.tomorrow.to_s
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize

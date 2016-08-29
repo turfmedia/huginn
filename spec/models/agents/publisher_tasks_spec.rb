@@ -7,7 +7,7 @@ describe Agents::PublisherTasks do
     @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
-                    packages: ['js2', 'q1']
+                    packages: 'js2, q1'
                   }
   end
 
@@ -38,7 +38,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
-                    packages: ['js2', 'q2']
+                    packages: 'js2, q2'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -200,7 +200,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Turfistar::Quinte',
-                    packages: ['q1']
+                    packages: 'q1'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -253,7 +253,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Turfistar::Simple',
-                    packages: ['js1', 'q1']
+                    packages: 'js1, q1'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
