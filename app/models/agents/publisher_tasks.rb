@@ -23,7 +23,7 @@ module Agents
 
     # @return [Array] list of packages from options
     def packages
-      return self.options[:packages] if instance_of?(Array)
+      return self.options[:packages] if self.options[:packages].instance_of?(Array)
       self.options[:packages].split(",").map(&:strip)
     end
 
