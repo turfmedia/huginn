@@ -10,9 +10,7 @@ module Agents
 
     def default_options
       { 
-        date: '',
-        package_type: '',
-        pipeline: 'Gazette',
+        pipeline_name: 'Gazette',
         packages: ['js2', 'q2']
       }
     end
@@ -25,6 +23,7 @@ module Agents
 
     # @return [Array] list of packages from options
     def packages
+      return self.options[:packages] if instance_of?(Array)
       self.options[:packages].split(",").map(&:strip)
     end
 
