@@ -14,6 +14,11 @@ module Agents
       }
     end
 
+    # check that file_nameare given by user
+    def validate_options
+      errors.add(:base, 'file_name is required') unless options['file_name'].present?
+    end
+
     def working?
       !recent_error_logs?
     end
@@ -27,7 +32,7 @@ module Agents
     def check(date=nil)
       date ||= interpolated[:date]
       date ||= Date.yesterday.to_s if date.blank?
-      offer_result = Orchestrator::Tasks::Pipelines::OfferResult.new(date)
+      offer_result = Orchestrator::Tasks::Pipelines::OfferResult.new(date, interpolated[:file_name])
   
       if offer_result.launch!
         create_event :payload => interpolated.merge(date: date, status: 'ok')

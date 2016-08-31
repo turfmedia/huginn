@@ -5,7 +5,8 @@ describe Agents::OfferResultsAgent do
     Event.destroy_all
     Agent.destroy_all
     @valid_params = {
-                      date: "2016-08-19" 
+                      date: "2016-08-19",
+                      file_name: 'file_name'
                     }
 
     @checker = Agents::OfferResultsAgent.new(:name => "somename", :options => @valid_params)
@@ -16,9 +17,9 @@ describe Agents::OfferResultsAgent do
   describe "#check" do
     context 'with not blank date' do
       before do
-        fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(@valid_params[:date])
+        fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(@valid_params[:date], @valid_params[:file_name])
         stub(fake_object).launch! { true } 
-        stub(Orchestrator::Tasks::Pipelines::OfferResult).new(@valid_params[:date]) do
+        stub(Orchestrator::Tasks::Pipelines::OfferResult).new(@valid_params[:date], @valid_params[:file_name]) do
           fake_object
         end
       end
@@ -28,9 +29,9 @@ describe Agents::OfferResultsAgent do
       end
 
       it "runs Orchestrator::Tasks::Pipelines::OfferResult pipeline with given data if this date present" do
-        fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(@valid_params[:date])
+        fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(@valid_params[:date], @valid_params[:file_name])
         stub(fake_object).launch!{ true }.times(1)
-        stub(Orchestrator::Tasks::Pipelines::OfferResult).new(@valid_params[:date]) do
+        stub(Orchestrator::Tasks::Pipelines::OfferResult).new(@valid_params[:date], @valid_params[:file_name]) do
           fake_object
         end
 
@@ -39,12 +40,12 @@ describe Agents::OfferResultsAgent do
     end
 
     it 'runs Orchestrator::Tasks::Pipelines::OfferResult pipeline for yesterday if given date is blank' do
-      fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(Date.yesterday.to_s)
+      fake_object = Orchestrator::Tasks::Pipelines::OfferResult.new(Date.yesterday.to_s, @valid_params[:file_name])
       stub(fake_object).launch!{ true }.times(1)
-      stub(Orchestrator::Tasks::Pipelines::OfferResult).new(Date.yesterday.to_s) do
+      stub(Orchestrator::Tasks::Pipelines::OfferResult).new(Date.yesterday.to_s, @valid_params[:file_name]) do
         fake_object
       end
-      @valid_params = {}
+      @valid_params = {file_name: 'file_name'}
       @checker = Agents::OfferResultsAgent.new(:name => "somename", :options => @valid_params)
       @checker.user = users(:jane)
       @checker.save!
