@@ -19,6 +19,8 @@ module Agents
     def validate_options
       errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
       errors.add(:base, 'packages is required') unless options['packages'].present?
+      errors.add(:base, 'html_template_id is required') unless options['html_template_id'].present?
+      errors.add(:base, 'comcenter_channel_id is required') unless options['comcenter_channel_id'].present?
     end
 
     # @return [Array] list of packages from options
@@ -47,7 +49,7 @@ module Agents
 
       date = event.payload[:date] || Date.tomorrow.to_s
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
-      pipeline = klass.new(date)
+      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'])
 
       pipeline.launch!
       create_event payload: pipeline.response
