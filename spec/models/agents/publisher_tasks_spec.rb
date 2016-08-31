@@ -9,7 +9,7 @@ describe Agents::PublisherTasks do
                     pipeline_name: 'Gazette',
                     packages: 'js2, q1',
                     html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'html_template_id'
+                    comcenter_channel_id: 'comcenter_channel_id'
                   }
   end
 
@@ -42,7 +42,7 @@ describe Agents::PublisherTasks do
                     pipeline_name: 'Gazette',
                     packages: 'js2, q2',
                     html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'html_template_id'
+                    comcenter_channel_id: 'comcenter_channel_id'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -206,7 +206,7 @@ describe Agents::PublisherTasks do
                     pipeline_name: 'Turfistar::Quinte',
                     packages: 'q1',
                     html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'html_template_id'
+                    comcenter_channel_id: 'comcenter_channel_id'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -261,7 +261,7 @@ describe Agents::PublisherTasks do
                     pipeline_name: 'Turfistar::Simple',
                     packages: 'js1, q1',
                     html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'html_template_id'
+                    comcenter_channel_id: 'comcenter_channel_id'
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)

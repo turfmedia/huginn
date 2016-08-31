@@ -41,7 +41,7 @@ module Agents
       return if event.blank? 
       return if (not dry_run?) && Event.where(agent_id: event.agent_id).select do |e| 
         begin
-          e.payload[:date].to_date == event.payload[:date].to_date && packages.include?(event.payload[:package_type])
+          e.payload[:date].to_date == event.payload[:date].to_date && packages.include?(e.payload[:package_type])
         rescue Exception => e
           false
         end
