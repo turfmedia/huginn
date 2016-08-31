@@ -11,7 +11,9 @@ module Agents
     def default_options
       { 
         pipeline_name: 'Gazette',
-        packages: ['js2', 'q2']
+        packages: ['js2', 'q2'],
+        html_template_id: '',
+        comcenter_channel_id: '',
       }
     end
 
