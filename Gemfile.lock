@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: 8940fe015887a5ab88bb2af941e4f0a356eaa3e7
+  revision: 806896d4f76f0c462a229ebf094feb2b1a0e8d5c
   specs:
-    orchestrator (1.3.6.1)
+    orchestrator (1.3.6.3)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
@@ -616,6 +616,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-kaminari-views (~> 0.0.3)
   bundler (>= 1.5.0)
+  byebug
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.4)
   capistrano-rails (~> 1.1)
