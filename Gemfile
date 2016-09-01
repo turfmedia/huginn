@@ -129,6 +129,7 @@ gem 'typhoeus', '~> 0.6.3'
 gem 'uglifier', '~> 2.7.2'
 
 group :development do
+  gem 'byebug'
   gem 'better_errors', '~> 1.1'
   gem 'binding_of_caller'
   gem 'quiet_assets'
