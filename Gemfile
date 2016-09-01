@@ -70,7 +70,7 @@ gem 'listen', '~> 3.0.5', require: false
 # gem 'aws-sdk-core', '~> 2.2.15'
 # gem 'aws-sdk', '2.5.1'
 
-# gem 'byebug'
+gem 'byebug'
 gem 'orchestrator', git: 'git@github.com:sbusso/publisher_task.git'
 # gem 'orchestrator', path: '/Users/valexl/workspace/turfmedia/gems/orchestrator'
 
@@ -129,7 +129,6 @@ gem 'typhoeus', '~> 0.6.3'
 gem 'uglifier', '~> 2.7.2'
 
 group :development do
-  gem 'byebug'
   gem 'better_errors', '~> 1.1'
   gem 'binding_of_caller'
   gem 'quiet_assets'
