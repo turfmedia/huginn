@@ -14,6 +14,7 @@ module Agents
         packages: ['js2', 'q2'],
         html_template_id: '',
         comcenter_channel_id: '',
+        comcenter_api: '',
       }
     end
 
@@ -23,6 +24,7 @@ module Agents
       errors.add(:base, 'packages is required') unless options['packages'].present?
       errors.add(:base, 'html_template_id is required') unless options['html_template_id'].present?
       errors.add(:base, 'comcenter_channel_id is required') unless options['comcenter_channel_id'].present?
+      errors.add(:base, 'comcenter_api is required') unless options['comcenter_api'].present?
     end
 
     # @return [Array] list of packages from options
@@ -51,7 +53,7 @@ module Agents
 
       date = event.payload[:date] || Date.tomorrow.to_s
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
-      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'])
+      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api'])
 
       pipeline.launch!
       create_event payload: pipeline.response
