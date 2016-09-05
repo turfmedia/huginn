@@ -44,6 +44,7 @@ namespace :deploy do
       execute('ln -s ~/current ~/huginn')
     end
   end
+
   after :publishing, :restart do
     on roles(:all) do
       within release_path do
