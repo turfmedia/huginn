@@ -10,13 +10,15 @@ module Agents
 
     def default_options
       { 
-        date: Date.yesterday.to_s,
+        file_name: '',
+        pipeline_name: ''
       }
     end
 
     # check that file_nameare given by user
     def validate_options
       errors.add(:base, 'file_name is required') unless options['file_name'].present?
+      errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
     end
 
     def working?
@@ -28,11 +30,12 @@ module Agents
       check(event.payload[:date])
     end
 
-    # Launch Orchestrator::Tasks::Pipelines::Results::Gazette pipeline.
+    # Launch Orchestrator::Tasks::Pipelines::Results::#{pipeline_name}.
     def check(date=nil)
       date ||= interpolated[:date]
       date ||= Date.yesterday.to_s if date.blank?
-      offer_result = Orchestrator::Tasks::Pipelines::Results::Gazette.new(date, interpolated[:file_name])
+      klass        = "Orchestrator::Tasks::Pipelines::Results::#{self.options[:pipeline_name]}".constantize
+      offer_result = klass.new(date, interpolated[:file_name])
   
       if offer_result.launch!
         create_event :payload => interpolated.merge(date: date, status: 'ok')
