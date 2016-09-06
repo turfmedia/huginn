@@ -1,11 +1,11 @@
 module Agents
-  class OfferResultsAgent < Agent
+  class PronosticResultsAgent < Agent
     # docs for how to create own Agent - https://github.com/cantino/huginn/wiki/Creating-a-new-agent
     can_dry_run! #it gives run agent manually via /agents/:agent_id/dry_runs
     default_schedule "never"
 
     description <<-MD
-      The OfferResultsAgent collects infromation about Gazette tips, get information about payout for them. And put this statistic to Google Spreadsheet
+      The PronosticResultsAgent collects infromation about Gazette tips, get information about payout for them. And put this statistic to Google Spreadsheet
     MD
 
     def default_options

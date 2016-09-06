@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Agents::OfferResultsAgent do
+describe Agents::PronosticResultsAgent do
   before do
     Event.destroy_all
     Agent.destroy_all
@@ -9,7 +9,7 @@ describe Agents::OfferResultsAgent do
                       file_name: 'file_name'
                     }
 
-    @checker = Agents::OfferResultsAgent.new(:name => "somename", :options => @valid_params)
+    @checker = Agents::PronosticResultsAgent.new(:name => "somename", :options => @valid_params)
     @checker.user = users(:jane)
     @checker.save!
   end
@@ -46,7 +46,7 @@ describe Agents::OfferResultsAgent do
         fake_object
       end
       @valid_params = {file_name: 'file_name'}
-      @checker = Agents::OfferResultsAgent.new(:name => "somename", :options => @valid_params)
+      @checker = Agents::PronosticResultsAgent.new(:name => "somename", :options => @valid_params)
       @checker.user = users(:jane)
       @checker.save!
 
