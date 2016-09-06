@@ -28,11 +28,11 @@ module Agents
       check(event.payload[:date])
     end
 
-    # Launch Orchestrator::Tasks::Pipelines::OfferResult pipeline.
+    # Launch Orchestrator::Tasks::Pipelines::Results::Gazette pipeline.
     def check(date=nil)
       date ||= interpolated[:date]
       date ||= Date.yesterday.to_s if date.blank?
-      offer_result = Orchestrator::Tasks::Pipelines::OfferResult.new(date, interpolated[:file_name])
+      offer_result = Orchestrator::Tasks::Pipelines::Results::Gazette.new(date, interpolated[:file_name])
   
       if offer_result.launch!
         create_event :payload => interpolated.merge(date: date, status: 'ok')
