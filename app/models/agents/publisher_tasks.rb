@@ -42,14 +42,24 @@ module Agents
     # It runs pipeline only if today we get all packages from options[:packages] (js2, q2 for example) from publisher api for the same date.
     def receive(incoming_events)
       event = incoming_events.first
-      return if event.blank? 
-      return if (not dry_run?) && Event.where(agent_id: event.agent_id).select do |e| 
-        begin
-          e.payload[:date].to_date == event.payload[:date].to_date && packages.include?(e.payload[:package_type])
-        rescue Exception => e
-          false
+      if event.blank? 
+        create_event payload: {status: 'failure', date: Date.tomorrow.to_s, text: 'Given event is blank'}
+        return
+      end
+      if not dry_run?
+        received_packages_before = Event.where(agent_id: event.agent_id).select do |e| 
+          begin
+            e.payload[:date].to_date == event.payload[:date].to_date && packages.include?(e.payload[:package_type])
+          rescue Exception => e
+            false
+          end
+        end.map(&:payload).uniq
+
+        if received_packages_before.count < packages.count
+          create_event payload: {status: 'failure', date: Date.tomorrow.to_s, text: "Were received only this packages - #{received_packages_before.inspect}; Expected this - #{packages}"}
+          return
         end
-      end.map(&:payload).uniq.count < packages.count
+      end
 
       date = event.payload[:date] || Date.tomorrow.to_s
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
