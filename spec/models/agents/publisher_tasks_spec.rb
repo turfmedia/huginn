@@ -7,7 +7,7 @@ describe Agents::PublisherTasks do
     @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
-                    packages: 'js2, q1',
+                    packages: { required: ['js2', 'q1'] },
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
@@ -41,7 +41,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
-                    packages: 'js2, q2',
+                    packages: { required: ['js2', 'q2'] },
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
@@ -206,7 +206,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Turfistar::Quinte',
-                    packages: 'q1',
+                    packages: { required: ['q1'], optional: ['Erratum Turfistar Quinte'] },
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
@@ -235,6 +235,41 @@ describe Agents::PublisherTasks do
         @checker.receive(@events)
       end
 
+      it 'does not run Orchestrator::Tasks::Pipelines::Quinte if given event is not from q1 package and before we received q1 package' do
+        q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
+
+        q1_event.agent = @webhook
+        q1_event.user  = @webhook.user
+        q1_event.save!
+
+        q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q2'}
+
+        q2_event.agent = @webhook
+        q2_event.user  = @webhook.user
+        q2_event.save!
+
+        @events.push(q2_event)
+
+        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+
+        @checker.receive(@events)
+      end
+
+
+      it 'does not run Orchestrator::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we do not receive any q1 packages' do
+        erratum_turfistar_quinte_event = Event.new payload: { date: '2016-08-15', package_type: 'Erratum Turfistar Quinte'}
+
+        erratum_turfistar_quinte_event.agent = @webhook
+        erratum_turfistar_quinte_event.user  = @webhook.user
+        erratum_turfistar_quinte_event.save!
+
+        @events.push(erratum_turfistar_quinte_event)
+
+        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+
+        @checker.receive(@events)
+      end
+
       it 'runs Orchestrator::Tasks::Pipelines::Quinte if given event is from q1 package' do
         q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
 
@@ -254,6 +289,32 @@ describe Agents::PublisherTasks do
         end
         @checker.receive(@events)
       end
+
+      it 'runs Orchestrator::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we received q1 package before' do
+        q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
+        q1_event.agent = @webhook
+        q1_event.user  = @webhook.user
+        q1_event.save!
+
+        erratum_turfistar_quinte_event = Event.new payload: { date: '2016-08-15', package_type: 'Erratum Turfistar Quinte'}
+
+        erratum_turfistar_quinte_event.agent = @webhook
+        erratum_turfistar_quinte_event.user  = @webhook.user
+        erratum_turfistar_quinte_event.save!
+
+        @events.push(erratum_turfistar_quinte_event)
+
+        fake_object = Orchestrator::Tasks::Pipelines::Turfistar::Quinte.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        stub(fake_object).launch!{ true }.times(1)
+        stub(fake_object).response { {} }
+
+        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+          fake_object
+        end
+
+        @checker.receive(@events)
+      end
+
     end
 
 
@@ -262,7 +323,7 @@ describe Agents::PublisherTasks do
         @valid_params = {
                     date: '2016-08-15',
                     pipeline_name: 'Turfistar::Simple',
-                    packages: 'js1, q1',
+                    packages: { required: ['js1', 'q1'] },
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
