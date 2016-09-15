@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: 0d18569ece4fb5f6af1038371cc3b90c579a21b3
+  revision: b3cd4ace27ed5287f9d7c2850c11bc063e85ec06
   specs:
-    orchestrator (1.9.9)
+    orchestrator (1.9.10)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
