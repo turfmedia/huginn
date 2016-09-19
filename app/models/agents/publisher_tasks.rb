@@ -56,7 +56,9 @@ module Agents
 
     def working?
       return false if events.order(:created_at).count.zero?
-      return false if options['expected_update_period_in_days'].present? && event_created_within?(options['expected_update_period_in_days'])
+      if options[:expected_update_period_in_days].present?
+        return false unless event_created_within?(options[:expected_update_period_in_days])
+      end
       events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
     end
 
