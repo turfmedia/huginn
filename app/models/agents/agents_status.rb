@@ -23,6 +23,15 @@ module Agents
       errors.add(:base, 'agents is required') unless options['agents'].present?
     end
 
+    # check is this agent either has error before or not
+    # @param [Agent] agent with status not working
+    # @return [true/false] result of new this error or not
+    def new_error?(agent)
+      today_events = events.where("DATE(created_at) = ?", Date.today)
+      today_events = today_events.select {|e| agent.last_event_at.nil? || e.payload[:time].to_time >= agent.last_event_at }
+      today_events.count.zero?
+    end
+
     # @return [Array] list of all Agents for check
     def agents
       return @agents if @agents
@@ -38,7 +47,9 @@ module Agents
 
     def check
       agents.each do |agent|
-        create_event(:payload => {name: agent.name}) unless agent.working?
+        unless agent.working?
+          create_event(:payload => {name: agent.name, time: Time.now}) if new_error?(agent)
+        end
       end
       nil
     end

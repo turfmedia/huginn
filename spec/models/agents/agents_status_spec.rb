@@ -100,8 +100,44 @@ describe Agents::AgentsStatus do
       @checker.save!
 
       expect { @checker.check }.to change { Event.count }.by(0)
-
     end
+
+    it 'does not create new event if was create before' do
+      options = {
+                date: '2016-08-15',
+                pipeline_name: 'Gazette',
+                packages: { required: ['js2', 'q1'] },
+                html_template_id: 'html_template_id',
+                comcenter_channel_id: 'comcenter_channel_id',
+                comcenter_api_key: 'comcenter_api_key',
+                expected_update_period_in_days: 1
+              }
+      agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
+      agent.user = users(:jane)
+      agent.save!
+      expect(agent.working?).to eq(false)
+      expect { @checker.check }.to change { Event.count }.by(1)
+      expect { @checker.check }.to change { Event.count }.by(0)
+    end
+
+    it 'does not create new event if was create before' do
+      options = {
+                date: '2016-08-15',
+                pipeline_name: 'Gazette',
+                packages: { required: ['js2', 'q1'] },
+                html_template_id: 'html_template_id',
+                comcenter_channel_id: 'comcenter_channel_id',
+                comcenter_api_key: 'comcenter_api_key',
+                expected_update_period_in_days: 1
+              }
+      agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
+      agent.user = users(:jane)
+      agent.save!
+      expect(agent.working?).to eq(false)
+      agent.create_event(payload: {status: 'failure', date: Date.today, agent_name: agent.name})
+      expect { @checker.check }.to change { Event.count }.by(1)
+    end
+
   end
 
   describe "#working?" do
