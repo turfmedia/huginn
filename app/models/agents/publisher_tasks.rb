@@ -23,7 +23,7 @@ module Agents
     end
 
     def last_event_at
-      events.order(:created_at).first.created_at
+      events.order(:created_at).first.try(:created_at)
     end
 
     # check that pipeline_name and packages are given by user
@@ -55,6 +55,7 @@ module Agents
     end
 
     def working?
+      return false if events.order(:created_at).count.zero?
       events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs? && event_created_within?(options['expected_update_period_in_days'])
     end
 
@@ -84,7 +85,7 @@ module Agents
       pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api_key'])
 
       pipeline.launch!
-      create_event payload: pipeline.response
+      create_event(payload: pipeline.response.merge(agent_name: self.name))
     end
 
     def check
