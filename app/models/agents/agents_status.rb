@@ -26,9 +26,9 @@ module Agents
     # @return [Array] list of all Agents for check
     def agents
       return @agents if @agents
-      @agents = Agent.all.where.not(id: self.id)
-      @agents = @agents.where(name: options[:agents])     if options[:agents].present? && options[:agents] != 'all'
-      @agents = @agents.where.not(name: options[:except]) if options[:except].present?
+      @agents = Agent.active.where.not(id: self.id)
+      @agents = @agents.where(name: options[:agents].map(&:strip))     if options[:agents].present? && options[:agents] != 'all'
+      @agents = @agents.where.not(name: options[:except].map(&:strip)) if options[:except].present?
       @agents
     end
 
@@ -38,8 +38,9 @@ module Agents
 
     def check
       agents.each do |agent|
-        create_event(:payload => interpolated) unless agent.working?
+        create_event(:payload => {name: agent.name}) unless agent.working?
       end
+      nil
     end
 
   end

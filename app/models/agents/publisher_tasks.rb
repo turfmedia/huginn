@@ -56,7 +56,8 @@ module Agents
 
     def working?
       return false if events.order(:created_at).count.zero?
-      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs? && event_created_within?(options['expected_update_period_in_days'])
+      return false if options['expected_update_period_in_days'].present? && event_created_within?(options['expected_update_period_in_days'])
+      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
