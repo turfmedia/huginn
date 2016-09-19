@@ -50,7 +50,7 @@ module Agents
     end
 
     def working?
-      !recent_error_logs?
+      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
@@ -59,14 +59,9 @@ module Agents
     # It runs pipeline if today we get all packages from options[:packages][:required] (js2, q2 for example) and given package is from optional pacakges (Erratum for example) from publisher api for the same date.
     def receive(incoming_events)
       event = incoming_events.first
-      if event.blank? 
-        create_event payload: {status: 'failure', date: Date.tomorrow.to_s, text: 'Given event is blank'}
-        return
-      end
-      unless event.payload[:package_type].in?(required_packages) || event.payload[:package_type].in?(optional_packages)
-        create_event payload: {status: 'failure', date: Date.tomorrow.to_s, text: "Received event is from another package #{event.inspect}. Expected this - #{packages}"}
-        return 
-      end
+      return if event.blank? 
+      return unless event.payload[:package_type].in?(required_packages) || event.payload[:package_type].in?(optional_packages)
+
       if not dry_run?
         received_packages_before = Event.where(agent_id: event.agent_id).select do |e| 
           begin
@@ -76,10 +71,7 @@ module Agents
           end
         end.map(&:payload).uniq
 
-        if received_packages_before.count < required_packages.count
-          create_event payload: {status: 'failure', date: Date.tomorrow.to_s, text: "Were received only this packages - #{received_packages_before.inspect}; Expected this - #{packages.inspect}"}
-          return
-        end
+        return if received_packages_before.count < required_packages.count
       end
 
       date = event.payload[:date] || Date.tomorrow.to_s

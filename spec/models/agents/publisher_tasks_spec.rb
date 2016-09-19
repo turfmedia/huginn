@@ -28,9 +28,16 @@ describe Agents::PublisherTasks do
     end
 
     describe "#working?" do
-      it "returns true if valid data" do
+      it "returns true if last event is success" do
         @checker.check
+        @checker.create_event(payload: { date: @valid_params[:date], status: "ok" })
         expect(@checker.reload).to be_working
+      end
+
+      it "returns false if last event is failure" do
+        @checker.check
+        @checker.create_event(payload: { date: @valid_params[:date], status: "failure" })
+        expect(@checker.reload).not_to be_working
       end
     end
   end
