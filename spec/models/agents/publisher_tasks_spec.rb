@@ -11,6 +11,7 @@ describe Agents::PublisherTasks do
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
+                    expected_update_period_in_days: 1
                   }
   end
 
@@ -29,16 +30,21 @@ describe Agents::PublisherTasks do
 
     describe "#working?" do
       it "returns true if last event is success" do
-        @checker.check
         @checker.create_event(payload: { date: @valid_params[:date], status: "ok" })
         expect(@checker.reload).to be_working
       end
 
       it "returns false if last event is failure" do
-        @checker.check
         @checker.create_event(payload: { date: @valid_params[:date], status: "failure" })
         expect(@checker.reload).not_to be_working
       end
+
+      it "returns false if last event is success but was received more than 1 day ago" do
+        event = @checker.create_event(payload: { date: @valid_params[:date], status: "ok" })
+        event.update_column :created_at, Time.now - 2.days
+        expect(@checker.reload).not_to be_working
+      end
+
     end
   end
 

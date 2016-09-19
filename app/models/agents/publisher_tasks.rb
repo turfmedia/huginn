@@ -18,7 +18,12 @@ module Agents
         html_template_id: '',
         comcenter_channel_id: '',
         comcenter_api_key: '',
+        expected_update_period_in_days: 1,
       }
+    end
+
+    def last_event_at
+      events.order(:created_at).first.created_at
     end
 
     # check that pipeline_name and packages are given by user
@@ -50,7 +55,7 @@ module Agents
     end
 
     def working?
-      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
+      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs? && event_created_within?(options['expected_update_period_in_days'])
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
