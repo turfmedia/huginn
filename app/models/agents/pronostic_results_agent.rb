@@ -39,6 +39,7 @@ module Agents
     def check(date=nil)
       date ||= interpolated[:date].to_date if interpolated[:date].present?
       date ||= Date.yesterday if date.blank?
+      date = date.to_date
       klass        = "Orchestrator::Tasks::Pipelines::Results::#{self.options[:pipeline_name]}".constantize
       
       #run pipeline for last two days
