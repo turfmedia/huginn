@@ -58,9 +58,8 @@ GIT
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
 
-GIT
-  remote: git@github.com:sbusso/publisher_task.git
-  revision: fb0931c781fa50c1448dd122b7fd5d31811d3b91
+PATH
+  remote: /Users/valexl/workspace/turfmedia/gems/orchestrator
   specs:
     orchestrator (1.11)
       aws-sdk (~> 2.5.1)
