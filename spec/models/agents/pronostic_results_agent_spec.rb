@@ -23,6 +23,10 @@ describe Agents::PronosticResultsAgent do
         before do
           fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], @valid_params[:file_name])
           stub(fake_object).launch! { true } 
+
+          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, @valid_params[:file_name]) do
+            fake_object
+          end
           stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], @valid_params[:file_name]) do
             fake_object
           end
@@ -34,7 +38,10 @@ describe Agents::PronosticResultsAgent do
 
         it "runs Orchestrator::Tasks::Pipelines::Results::Gazette pipeline with given data if this date present" do
           fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], @valid_params[:file_name])
-          stub(fake_object).launch!{ true }.times(1)
+          stub(fake_object).launch!{ true }.times(2)
+          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, @valid_params[:file_name]) do
+            fake_object
+          end
           stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], @valid_params[:file_name]) do
             fake_object
           end
@@ -45,10 +52,15 @@ describe Agents::PronosticResultsAgent do
 
       it 'runs Orchestrator::Tasks::Pipelines::Results::Gazette pipeline for yesterday if given date is blank' do
         fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(Date.yesterday.to_s, @valid_params[:file_name])
-        stub(fake_object).launch!{ true }.times(1)
+        stub(fake_object).launch!{ true }.times(2)
+
+        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((Date.yesterday - 1.day).to_s, @valid_params[:file_name]) do
+          fake_object
+        end
         stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(Date.yesterday.to_s, @valid_params[:file_name]) do
           fake_object
         end
+
         @valid_params = {file_name: 'file_name', pipeline_name: 'Gazette'}
         @checker = Agents::PronosticResultsAgent.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -62,6 +74,9 @@ describe Agents::PronosticResultsAgent do
       it "returns true if valid data" do
         fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], @valid_params[:file_name])
         stub(fake_object).launch! { true } 
+        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, @valid_params[:file_name]) do
+          fake_object
+        end
         stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], @valid_params[:file_name]) do
           fake_object
         end
@@ -89,6 +104,9 @@ describe Agents::PronosticResultsAgent do
       before do
         fake_object = Orchestrator::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], @valid_params[:file_name])
         stub(fake_object).launch! { true } 
+        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, @valid_params[:file_name]) do
+          fake_object
+        end
         stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], @valid_params[:file_name]) do
           fake_object
         end
@@ -104,6 +122,10 @@ describe Agents::PronosticResultsAgent do
       it "returns true if valid data" do
         fake_object = Orchestrator::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], @valid_params[:file_name])
         stub(fake_object).launch! { true } 
+
+        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, @valid_params[:file_name]) do
+          fake_object
+        end
         stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], @valid_params[:file_name]) do
           fake_object
         end

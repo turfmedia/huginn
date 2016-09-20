@@ -37,15 +37,23 @@ module Agents
 
     # Launch Orchestrator::Tasks::Pipelines::Results::#{pipeline_name}.
     def check(date=nil)
-      date ||= interpolated[:date]
-      date ||= Date.yesterday.to_s if date.blank?
+      date ||= interpolated[:date].to_date if interpolated[:date].present?
+      date ||= Date.yesterday if date.blank?
       klass        = "Orchestrator::Tasks::Pipelines::Results::#{self.options[:pipeline_name]}".constantize
-      offer_result = klass.new(date, interpolated[:file_name])
-  
-      if offer_result.launch!
-        create_event :payload => interpolated.merge(date: date, status: 'ok')
+      
+      #run pipeline for last two days
+      dates = [date, date - 1.day]
+      result_of_launch = dates.all? do |d|
+        offer_result = klass.new(d.to_s, interpolated[:file_name])
+        offer_result.launch!
+      end
+
+      if result_of_launch
+        # if all pipelins were sucessfully finished create event with status ok
+        create_event :payload => interpolated.merge(date: date.to_s, status: 'ok')
       else
-        create_event :payload => interpolated.merge(date: date, status: 'failure')
+        # if all pipelins were not sucessfully finished create event with status failure
+        create_event :payload => interpolated.merge(date: date.to_s, status: 'failure')
       end
     end
 
