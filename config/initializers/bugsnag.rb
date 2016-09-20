@@ -2,6 +2,6 @@ Bugsnag.configure do |config|
   if Rails.env.test? || Rails.env.development?
     #Do not use Bugsnag
   else
-    config.api_key = "189a29fedef5e347d2eb37ea4bdc531f"
+    config.api_key = "97d2a9b6a14f0f17d35c2b675f02d8cc"
   end
 end
