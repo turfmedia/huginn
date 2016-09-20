@@ -21,6 +21,11 @@ module Agents
       errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
     end
 
+    def recent_error_logs?
+      return true if last_event_at.blank? && last_error_log_at
+      last_event_at && last_error_log_at && last_error_log_at > (last_event_at - 2.minutes)
+    end
+
     def working?
       !recent_error_logs?
     end
