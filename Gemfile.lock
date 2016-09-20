@@ -136,6 +136,7 @@ GEM
       kaminari (>= 0.13)
       rails (>= 3.1)
     buftok (0.2.0)
+    bugsnag (4.1.0)
     builder (3.2.2)
     byebug (8.2.5)
     capistrano (3.4.0)
@@ -615,6 +616,7 @@ DEPENDENCIES
   better_errors (~> 1.1)
   binding_of_caller
   bootstrap-kaminari-views (~> 0.0.3)
+  bugsnag
   bundler (>= 1.5.0)
   byebug
   capistrano (~> 3.4.0)
