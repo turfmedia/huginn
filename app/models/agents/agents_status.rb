@@ -27,9 +27,9 @@ module Agents
     # @param [Agent] agent with status not working
     # @return [true/false] result of new this error or not
     def new_error?(agent)
-      today_events = events.where("DATE(created_at) = ?", Date.today)
-      today_events = today_events.select {|e| agent.last_event_at.nil? || e.payload[:time].to_time >= agent.last_event_at }
-      today_events.count.zero?
+      last_two_days_events = events.where("DATE(created_at) >= ?", Date.yesterday).order(:created_at)
+      last_two_days_events = last_two_days_events.select {|e| agent.last_event_at.nil? || e.payload[:time].to_time >= agent.last_event_at }
+      last_two_days_events.count.zero?
     end
 
     # @return [Array] list of all Agents for check
