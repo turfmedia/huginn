@@ -27,9 +27,10 @@ module Agents
     # @param [Agent] agent with status not working
     # @return [true/false] result of new this error or not
     def new_error?(agent)
-      last_two_days_events = events.where("DATE(created_at) >= ?", Date.yesterday).order(:created_at)
-      last_two_days_events = last_two_days_events.select {|e| agent.last_event_at.nil? || e.payload[:time].to_time >= agent.last_event_at }
-      last_two_days_events.count.zero?
+      agent_status = AgentStatus.find_or_initialize_by agent_id: agent.id, monitoring_agent_id: self.id
+      return true if agent_status.new_record?
+      return true if agent_status.ok?
+      false
     end
 
     # @return [Array] list of all Agents for check
@@ -45,10 +46,23 @@ module Agents
       event_created_within?(options['expected_update_period_in_days']) && !recent_error_logs?
     end
 
+    def commit_not_working_agent!(agent)
+      agent_status = AgentStatus.find_or_initialize_by monitoring_agent_id: self.id, agent_id: agent.id
+      agent_status.error!
+      create_event(:payload => {name: agent.name, time: Time.now})
+    end
+
+    def commit_working_agent!(agent)
+      agent_status = AgentStatus.find_or_initialize_by monitoring_agent_id: self.id, agent_id: agent.id
+      agent_status.ok! unless agent_status.ok?
+    end
+
     def check
       agents.each do |agent|
-        unless agent.working?
-          create_event(:payload => {name: agent.name, time: Time.now}) if new_error?(agent)
+        if agent.working?
+          commit_working_agent!(agent)
+        else
+          commit_not_working_agent!(agent) if new_error?(agent)
         end
       end
       nil
