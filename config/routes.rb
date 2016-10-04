@@ -92,7 +92,7 @@ Huginn::Application.routes.draw do
 
   match "/users/:user_id/web_requests/:agent_id/:secret" => "web_requests#handle_request", :as => :web_requests, :via => [:get, :post, :put, :delete]
   post  "/users/:user_id/webhooks/:agent_id/:secret" => "web_requests#handle_request" # legacy
-  post  "/users/:user_id/update_location/:secret" => "web_requests#update_location" # legacy
+  post  "/users/:user_id/update_location/:secret" => "web_requests#update_location"   # legacy
 
   devise_for :users,
              controllers: { 
