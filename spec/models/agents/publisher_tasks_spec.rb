@@ -398,7 +398,133 @@ describe Agents::PublisherTasks do
 
     end
 
+    context 'MiT CG' do
+      before do
+        @valid_params = {
+                    date: '2016-10-06',
+                    pipeline_name: 'MIT::CG',
+                    packages: { required: ['mit_cg'] },
+                    html_template_id: 'html_template_id',
+                    comcenter_channel_id: 'comcenter_channel_id',
+                    comcenter_api_key: 'comcenter_api_key',
+                  }
+        @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
+        @checker.user = users(:jane)
+        @checker.save!
+        @webhook = Agents::WebhookAgent.new( :name => 'webhook',
+                                              :options => { 'secret' => 'foobar', 'payload_path' => '.' })
+        @webhook.user = @checker.user
+        @webhook.save!
+      end
 
+      it 'runs Orchestrator::Tasks::Pipelines::MIT::CG if received 2 events and first is not from MiT::CG' do
+        mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
+        mit_cdj_event.agent = @webhook
+        mit_cdj_event.user  = @webhook.user
+        mit_cdj_event.save!
+        mit_cg_event  = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cg"}
+        mit_cg_event.agent = @webhook
+        mit_cg_event.user  = @webhook.user
+        mit_cg_event.save!
+
+        @events = [mit_cdj_event, mit_cg_event]
+
+        fake_object = Orchestrator::Tasks::Pipelines::MIT::CG.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        stub(fake_object).launch!{ true }.times(1)
+        stub(fake_object).response { {} }
+
+        stub(Orchestrator::Tasks::Pipelines::MIT::CG).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+          fake_object
+        end
+        @checker.receive(@events)
+      end
+    end
+
+    context 'MiT CDJ' do
+      before do
+        @valid_params = {
+                    date: '2016-10-06',
+                    pipeline_name: 'MIT::CDJ',
+                    packages: { required: ['mit_cdj'] },
+                    html_template_id: 'html_template_id',
+                    comcenter_channel_id: 'comcenter_channel_id',
+                    comcenter_api_key: 'comcenter_api_key',
+                  }
+        @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
+        @checker.user = users(:jane)
+        @checker.save!
+        @webhook = Agents::WebhookAgent.new( :name => 'webhook',
+                                              :options => { 'secret' => 'foobar', 'payload_path' => '.' })
+        @webhook.user = @checker.user
+        @webhook.save!
+      end
+
+      it 'runs Orchestrator::Tasks::Pipelines::MIT::CDJ only once if received 3 events and the first and the last are from MiT::CDJ but for same date' do
+        mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
+        mit_cdj_event.agent = @webhook
+        mit_cdj_event.user  = @webhook.user
+        mit_cdj_event.save!
+        mit_cg_event  = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cg"}
+        mit_cg_event.agent = @webhook
+        mit_cg_event.user  = @webhook.user
+        mit_cg_event.save!
+        mit_cdj_event2 = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
+        mit_cdj_event2.agent = @webhook
+        mit_cdj_event2.user  = @webhook.user
+        mit_cdj_event2.save!
+        
+
+        @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
+
+        fake_object = Orchestrator::Tasks::Pipelines::MIT::CDJ.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        stub(fake_object).launch!{ true }.times(1)
+        stub(fake_object).response { {} }
+
+        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+          fake_object
+        end
+        @checker.receive(@events)
+      end
+
+      it 'runs Orchestrator::Tasks::Pipelines::MIT::CDJ only once if received 3 events and the first and the last are from MiT::CDJ but for different date' do
+        mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
+        mit_cdj_event.agent = @webhook
+        mit_cdj_event.user  = @webhook.user
+        mit_cdj_event.save!
+        mit_cg_event  = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cg"}
+        mit_cg_event.agent = @webhook
+        mit_cg_event.user  = @webhook.user
+        mit_cg_event.save!
+        mit_cdj_event2 = Event.new payload: {"date"=>"2016-10-07", "package_type"=>"mit_cdj"}
+        mit_cdj_event2.agent = @webhook
+        mit_cdj_event2.user  = @webhook.user
+        mit_cdj_event2.save!
+        
+
+        @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
+
+        fake_object1 = Orchestrator::Tasks::Pipelines::MIT::CDJ.new('2016-10-06', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        stub(fake_object1).launch!{ true }.times(1)
+        stub(fake_object1).response { {} }
+
+
+        fake_object2 = Orchestrator::Tasks::Pipelines::MIT::CDJ.new('2016-10-07', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        stub(fake_object2).launch!{ true }.times(1)
+        stub(fake_object2).response { {} }
+
+        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new('2016-10-07', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+          fake_object2
+        end
+
+        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new('2016-10-06', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+          fake_object1
+        end
+        @checker.receive(@events)
+
+      end
+    end
   end
+
+
 
 end

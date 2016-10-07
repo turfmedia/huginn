@@ -67,34 +67,46 @@ module Agents
     # It runs pipeline if today we get all packages from options[:packages][:required] (js2, q2 for example) from publisher api for the same date.
     # It runs pipeline if today we get all packages from options[:packages][:required] (js2, q2 for example) and given package is from optional pacakges (Erratum for example) from publisher api for the same date.
     def receive(incoming_events)
-      event = incoming_events.first
-      return if event.blank? 
-
-      if not dry_run?
-        return unless event.payload[:package_type].in?(required_packages) || event.payload[:package_type].in?(optional_packages)
-        received_packages_before = Event.where(agent_id: event.agent_id).select do |e| 
-          begin
-            e.payload[:date].to_date == event.payload[:date].to_date && required_packages.include?(e.payload[:package_type])
-          rescue Exception => e
-            false
-          end
-        end.map(&:payload).uniq
-
-        return if received_packages_before.count < required_packages.count
+      @processed_dates = []
+      incoming_events.each do |event|
+        process_event(event)
       end
-
-      date = event.payload[:date] || Date.tomorrow.to_s
-      klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
-      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api_key'])
-
-      result = pipeline.launch!
-      create_event(payload: pipeline.response.merge(agent_name: self.name))
     end
 
     def check
       event = create_event(:payload => interpolated)
       receive([event]) if dry_run?
       event
+    end
+
+    def process_event(event)
+      if not dry_run?
+        return false unless event.payload[:package_type].in?(required_packages) || event.payload[:package_type].in?(optional_packages)
+        received_packages_before = Event.where(agent_id: event.agent_id)
+        received_packages_before = received_packages_before.select do |e| 
+          begin
+            e.payload[:date].to_date == event.payload[:date].to_date && required_packages.include?(e.payload[:package_type])
+          rescue Exception => e
+            false
+          end
+        end
+        received_packages_before = received_packages_before.map(&:payload).uniq
+        return false if received_packages_before.count < required_packages.count
+      end
+
+      date = event.payload[:date] || Date.tomorrow.to_s
+      
+      return false if @processed_dates.include?(date)
+
+      klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
+      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api_key'])
+
+      result = pipeline.launch!
+      if create_event(payload: pipeline.response.merge(agent_name: self.name))
+        @processed_dates.push(date)
+      else
+        false
+      end
     end
 
   end
