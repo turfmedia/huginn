@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: c0b6ab451f109065364813d6cf5f3cfccf503fca
+  revision: de598a95e25c8f320f3b6ad3f339432adcea8d1e
   specs:
-    orchestrator (1.12.14)
+    orchestrator (1.12.15)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
@@ -723,4 +723,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.13.2
