@@ -57,9 +57,17 @@ module Agents
     def working?
       return false if events.order(:created_at).count.zero?
       if options[:expected_time_in_hours].present?
-        return false unless event_created_within?(options[:expected_time_in_hours])
+        unless event_created_within?(options[:expected_time_in_hours])
+          @reason_not_working = "Last package was sent a long time ago"
+          return false 
+        end
       end
-      events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
+      if events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
+        true
+      else
+        @reason_not_working = "Last run pipeline was with error"
+        false
+      end
     end
 
     def event_created_within?(time)
@@ -70,13 +78,13 @@ module Agents
         next_date   = Date.tomorrow # tips which should be sent before 1 day (like Gazette)
       end
 
-      return true  if get_success_events_for(next_date).count > 0 # if package was sent before
-      return false if get_success_events_for(next_date - 1.day).count.zero? # if more then 1 day was not any packages
+      return true  if events.where(date: next_date).count > 0 # if package was sent before
+      return false if events.where(date: next_date - 1.day).count.zero? # if more then 1 day was not any packages
       Time.now <= Time.now.beginning_of_day + time.hours # check that time is ok
     end
 
-    def get_success_events_for(date)
-      events.where(date: date).select{ |e| e.payload[:status] == 'ok' }
+    def reason_not_working
+      @reason_not_working ||= ''
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.

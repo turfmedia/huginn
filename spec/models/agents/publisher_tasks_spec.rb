@@ -97,7 +97,33 @@ describe Agents::PublisherTasks do
         end
       end
     end
+
+    describe '#reason_not_working' do
+      before do
+        @valid_params[:expected_time_in_hours] = Time.now.hour
+        @checker.options = @valid_params and @checker.save!
+      end
+
+      it 'returns [] if working?' do
+        @checker.create_event(payload: { date: Date.today, status: "ok" }, date: Date.today)
+        expect(@checker.working?).to eq(true)
+        expect(@checker.reason_not_working).to eq('')
+      end
+
+      it 'returns errors informatin about error if does not work becaues something happend with pipline' do
+        @checker.create_event(payload: { date: Date.today, status: "failure" }, date: Date.today)
+        expect(@checker.working?).to eq(false)
+        expect(@checker.reason_not_working).to eq("Last run pipeline was with error")
+      end
+
+      it 'returns errors informatin about to long not sending if does not work becaues last package was sent to long' do
+        @checker.create_event(payload: { date: Date.yesterday, status: "ok" }, date: Date.yesterday)
+        expect(@checker.working?).to eq(false)
+        expect(@checker.reason_not_working).to eq("Last package was sent a long time ago")
+      end
+    end
   end
+
 
   describe '#receive' do
     context '#Gazette' do
