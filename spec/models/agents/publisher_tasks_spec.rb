@@ -11,7 +11,7 @@ describe Agents::PublisherTasks do
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
-                    expected_time_in_hours: - Time.now.hour # negative means last day
+                    expected_time_in_hours: - (Time.now.hour + 1)# negative means last day
                   }
   end
 
@@ -45,15 +45,54 @@ describe Agents::PublisherTasks do
           @checker.options = @valid_params and @checker.save!
         end
 
-        it "shuld be sent today in time less then #{Time.now.hour} hours (returns true if yes)" do
+        it "should be sent today in time less then #{Time.now.hour} hours (returns true if yes)" do
           event = @checker.create_event(payload: { date: Date.tomorrow, status: "ok" })
           event.update_column :date, Date.tomorrow
           expect(@checker.reload).to be_working
         end
         
-        it "shuld be sent today in time less then #{Time.now.hour} hours (returns false if not)" do
+        it "should be sent today in time less then #{Time.now.hour} hours (returns false if not)" do
           event = @checker.create_event(payload: { date: Date.today, status: "ok" })
+          event.update_column :date, Date.today
+          expect(@checker.reload).not_to be_working
+        end
+
+        it "should be sent today in time less then #{Time.now.hour} hours (returns false if yes but failure)" do
+          event = @checker.create_event(payload: { date: Date.tomorrow, status: "failure" })
+          event.update_column :date, Date.tomorrow
+          expect(@checker.reload).not_to be_working
+        end
+
+        it "should be sent today in time less then #{Time.now.hour} hours (returns true if yes and if wrong order)" do
+          event1 = @checker.create_event(payload: { date: Date.tomorrow, status: "ok" })
+          event1.update_column :date, Date.tomorrow
+          event2 = @checker.create_event(payload: { date: Date.today, status: "ok" })
+          event2.update_column :date, Date.today
+          expect(@checker.reload).to be_working
+        end
+      end
+
+      context 'Turfistart JS' do
+        before do
+          @valid_params[:expected_time_in_hours] = Time.now.hour
+          @checker.options = @valid_params and @checker.save!
+        end
+
+        it "should be sent today in time less then #{Time.now.hour} hours (returns true if yes)" do
+          event = @checker.create_event(payload: { date: Date.today, status: "ok" })
+          event.update_column :date, Date.today
+          expect(@checker.reload).to be_working
+        end
+        
+        it "should be sent today in time less then #{Time.now.hour} hours (returns false if not)" do
+          event = @checker.create_event(payload: { date: Date.yesterday, status: "ok" })
           event.update_column :date, Date.yesterday
+          expect(@checker.reload).not_to be_working
+        end
+
+        it "should be sent today in time less then #{Time.now.hour} hours (returns false if yes but failure)" do
+          event = @checker.create_event(payload: { date: Date.today, status: "failure" })
+          event.update_column :date, Date.today
           expect(@checker.reload).not_to be_working
         end
       end

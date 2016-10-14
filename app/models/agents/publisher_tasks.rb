@@ -66,12 +66,17 @@ module Agents
       if time >= 0 
         next_date   = Date.today # tips which should be sent today (like Turfistart JS)
       else
+        time = - time
         next_date   = Date.tomorrow # tips which should be sent before 1 day (like Gazette)
       end
 
-      return true if events.where(date: next_date).count > 0 # if package was sent before
-      return false if events.where(date: next_date - 1.day).count.zero? # if more then 1 day was not any packages
-      Time.now >= Time.now.beginning_of_day + time.hours # check that time is ok
+      return true  if get_success_events_for(next_date).count > 0 # if package was sent before
+      return false if get_success_events_for(next_date - 1.day).count.zero? # if more then 1 day was not any packages
+      Time.now <= Time.now.beginning_of_day + time.hours # check that time is ok
+    end
+
+    def get_success_events_for(date)
+      events.where(date: date).select{ |e| e.payload[:status] == 'ok' }
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
