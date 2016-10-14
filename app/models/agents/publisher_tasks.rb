@@ -8,6 +8,8 @@ module Agents
       The PublisherAgent creates an event for sending emails with La Gazette Turf to users.
     MD
 
+    attr_accessor :reason_not_working
+
     def default_options
       { 
         pipeline_name: 'Gazette',
@@ -81,10 +83,6 @@ module Agents
       return true  if events.where(date: next_date).count > 0 # if package was sent before
       return false if events.where(date: next_date - 1.day).count.zero? # if more then 1 day was not any packages
       Time.now <= Time.now.beginning_of_day + time.hours # check that time is ok
-    end
-
-    def reason_not_working
-      @reason_not_working ||= ''
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.

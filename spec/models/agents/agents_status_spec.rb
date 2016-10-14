@@ -52,6 +52,15 @@ describe Agents::AgentsStatus do
         expect(as.monitoring_agent_id).to eq(@checker.id)
         expect(as.status).to eq(AgentStatus::ERROR)
       end
+
+      it 'creates event with correct fields' do
+        @agent.reason_not_working = "Last package was sent a long time ago"
+        @checker.commit_not_working_agent!(@agent)
+        e = @checker.events.last
+        expect(e.payload[:name]).to eq(@agent.name)
+        expect(e.payload[:time].to_date).to eq(Time.now.to_date)
+        expect(e.payload[:reason]).to eq(@agent.reason_not_working)
+      end
     end
 
     context '#commit_working_agent!' do

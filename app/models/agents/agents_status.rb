@@ -49,7 +49,9 @@ module Agents
     def commit_not_working_agent!(agent)
       agent_status = AgentStatus.find_or_initialize_by monitoring_agent_id: self.id, agent_id: agent.id
       agent_status.error!
-      create_event(:payload => {name: agent.name, time: Time.now})
+      options = {name: agent.name, time: Time.now}
+      options[:reason] = agent.reason_not_working if agent.class.method_defined?(:reason_not_working)
+      create_event(:payload => options)
     end
 
     def commit_working_agent!(agent)
