@@ -5,8 +5,11 @@ class InitDateForPublisherTasksAgent < ActiveRecord::Migration
         e.date = e.payload[:date]
         e.save!
       end
+      last_event = agent.events.last
+      hour = last_event.present? ? last_event.created_at.hour : 11
+
       new_options = agent.options 
-      new_options[:expected_time_in_hours] = 12
+      new_options[:expected_time_in_hours] = hour
       agent.options  = new_options
       agent.save!
     end
