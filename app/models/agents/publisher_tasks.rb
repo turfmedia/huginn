@@ -18,7 +18,7 @@ module Agents
         html_template_id: '',
         comcenter_channel_id: '',
         comcenter_api_key: '',
-        expected_update_period_in_days: 1,
+        expected_time_in_hours: 12,
       }
     end
 
@@ -56,10 +56,22 @@ module Agents
 
     def working?
       return false if events.order(:created_at).count.zero?
-      if options[:expected_update_period_in_days].present?
-        return false unless event_created_within?(options[:expected_update_period_in_days])
+      if options[:expected_time_in_hours].present?
+        return false unless event_created_within?(options[:expected_time_in_hours])
       end
       events.order(:created_at).first.payload[:status] == "ok" && !recent_error_logs?
+    end
+
+    def event_created_within?(time)
+      if time >= 0 
+        next_date   = Date.today # tips which should be sent today (like Turfistart JS)
+      else
+        next_date   = Date.tomorrow # tips which should be sent before 1 day (like Gazette)
+      end
+
+      return true if events.where(date: next_date).count > 0 # if package was sent before
+      return false if events.where(date: next_date - 1.day).count.zero? # if more then 1 day was not any packages
+      Time.now >= Time.now.beginning_of_day + time.hours # check that time is ok
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
@@ -102,7 +114,7 @@ module Agents
       pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api_key'])
 
       result = pipeline.launch!
-      if create_event(payload: pipeline.response.merge(agent_name: self.name))
+      if create_event(payload: pipeline.response.merge(agent_name: self.name), date: date)
         @processed_dates.push(date)
       else
         false

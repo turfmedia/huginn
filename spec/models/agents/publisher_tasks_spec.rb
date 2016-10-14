@@ -11,7 +11,7 @@ describe Agents::PublisherTasks do
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
-                    expected_update_period_in_days: 1
+                    expected_time_in_hours: - Time.now.hour # negative means last day
                   }
   end
 
@@ -30,7 +30,7 @@ describe Agents::PublisherTasks do
 
     describe "#working?" do
       it "returns true if last event is success" do
-        @checker.create_event(payload: { date: @valid_params[:date], status: "ok" })
+        @checker.create_event(payload: { date: @valid_params[:date], status: "ok" }, date: Date.today)
         expect(@checker.reload).to be_working
       end
 
@@ -39,12 +39,24 @@ describe Agents::PublisherTasks do
         expect(@checker.reload).not_to be_working
       end
 
-      it "returns false if last event is success but was received more than 1 day ago" do
-        event = @checker.create_event(payload: { date: @valid_params[:date], status: "ok" })
-        event.update_column :created_at, Time.now - 2.days
-        expect(@checker.reload).not_to be_working
-      end
+      context 'MIT' do
+        before do
+          @valid_params[:expected_time_in_hours] = - Time.now.hour
+          @checker.options = @valid_params and @checker.save!
+        end
 
+        it "shuld be sent today in time less then #{Time.now.hour} hours (returns true if yes)" do
+          event = @checker.create_event(payload: { date: Date.tomorrow, status: "ok" })
+          event.update_column :date, Date.tomorrow
+          expect(@checker.reload).to be_working
+        end
+        
+        it "shuld be sent today in time less then #{Time.now.hour} hours (returns false if not)" do
+          event = @checker.create_event(payload: { date: Date.today, status: "ok" })
+          event.update_column :date, Date.yesterday
+          expect(@checker.reload).not_to be_working
+        end
+      end
     end
   end
 
@@ -184,6 +196,9 @@ describe Agents::PublisherTasks do
         end
 
         expect {@checker.receive(@events)}.to change { Event.count }.by(1)
+        
+        expect(@checker.events.count).to eq(1)
+        expect(@checker.events.first.date).to eq('2016-08-15'.to_date)
       end
 
       it 'creates new event which contains information about pdf_link' do

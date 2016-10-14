@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
   include JSONSerializedField
   include LiquidDroppable
 
-  attr_accessible :lat, :lng, :location, :payload, :user_id, :user, :expires_at
+  attr_accessible :lat, :lng, :location, :payload, :user_id, :user, :expires_at, :date
 
   acts_as_mappable
 
