@@ -107,7 +107,7 @@ describe Agents::PublisherTasks do
       it 'returns [] if working?' do
         @checker.create_event(payload: { date: Date.today, status: "ok" }, date: Date.today)
         expect(@checker.working?).to eq(true)
-        expect(@checker.reason_not_working).to eq('')
+        expect(@checker.reason_not_working).to eq(nil)
       end
 
       it 'returns errors informatin about error if does not work becaues something happend with pipline' do

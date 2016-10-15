@@ -73,7 +73,7 @@ module Agents
     end
 
     def event_created_within?(time)
-      if time >= 0 
+      if time.to_i >= 0 
         next_date   = Date.today # tips which should be sent today (like Turfistart JS)
       else
         time = - time
