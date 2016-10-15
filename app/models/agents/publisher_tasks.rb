@@ -59,7 +59,7 @@ module Agents
     def working?
       return false if events.order(:created_at).count.zero?
       if options[:expected_time_in_hours].present?
-        unless event_created_within?(options[:expected_time_in_hours])
+        unless event_created_within?(options[:expected_time_in_hours].to_s.gsub(/\s+/, '').to_i)
           @reason_not_working = "Last package was sent a long time ago"
           return false 
         end
@@ -73,7 +73,7 @@ module Agents
     end
 
     def event_created_within?(time)
-      if time.to_i >= 0 
+      if time >= 0 
         next_date   = Date.today # tips which should be sent today (like Turfistart JS)
       else
         time = - time

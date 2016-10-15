@@ -41,7 +41,7 @@ describe Agents::PublisherTasks do
 
       context 'MIT' do
         before do
-          @valid_params[:expected_time_in_hours] = - Time.now.hour
+          @valid_params[:expected_time_in_hours] = " - #{Time.now.hour}"
           @checker.options = @valid_params and @checker.save!
         end
 
