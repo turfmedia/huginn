@@ -74,15 +74,17 @@ module Agents
 
     def event_created_within?(time)
       if time >= 0 
+        expected_time = Time.now.at_beginning_of_day + time.hours
         next_date   = Date.today # tips which should be sent today (like Turfistart JS)
       else
         time = - time
         next_date   = Date.tomorrow # tips which should be sent before 1 day (like Gazette)
+        expected_time = Time.now.at_beginning_of_day + 1.day - time.hours
       end
 
       return true  if events.where(date: next_date).count > 0 # if package was sent before
       return false if events.where(date: next_date - 1.day).count.zero? # if more then 1 day was not any packages
-      Time.now <= Time.now.beginning_of_day + time.hours # check that time is ok
+      Time.now <= expected_time
     end
 
     # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.

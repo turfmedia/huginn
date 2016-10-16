@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe Agents::PublisherTasks do
   before do
+    @expected_time_in_hours = (Time.now - 1.hour).hour
+
     Event.destroy_all
     Agent.destroy_all
     @valid_params = {
@@ -11,7 +13,7 @@ describe Agents::PublisherTasks do
                     html_template_id: 'html_template_id',
                     comcenter_channel_id: 'comcenter_channel_id',
                     comcenter_api_key: 'comcenter_api_key',
-                    expected_time_in_hours: - (Time.now.hour + 1)# negative means last day
+                    expected_time_in_hours: @expected_time_in_hours # negative means last day
                   }
   end
 
@@ -41,7 +43,7 @@ describe Agents::PublisherTasks do
 
       context 'MIT' do
         before do
-          @valid_params[:expected_time_in_hours] = " - #{Time.now.hour}"
+          @valid_params[:expected_time_in_hours] =  " - #{24 - (Time.now - 1.hour).hour}"
           @checker.options = @valid_params and @checker.save!
         end
 
@@ -74,7 +76,7 @@ describe Agents::PublisherTasks do
 
       context 'Turfistart JS' do
         before do
-          @valid_params[:expected_time_in_hours] = Time.now.hour
+          @valid_params[:expected_time_in_hours] = (Time.now - 1.hour).hour
           @checker.options = @valid_params and @checker.save!
         end
 
@@ -100,7 +102,6 @@ describe Agents::PublisherTasks do
 
     describe '#reason_not_working' do
       before do
-        @valid_params[:expected_time_in_hours] = Time.now.hour
         @checker.options = @valid_params and @checker.save!
       end
 
