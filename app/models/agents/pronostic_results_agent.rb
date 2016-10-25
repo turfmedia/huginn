@@ -23,7 +23,12 @@ module Agents
 
     def recent_error_logs?
       return true if last_event_at.blank? && last_error_log_at
+      return true if last_event.payload[:status] == "failure"
       last_event_at && last_error_log_at && last_error_log_at > (last_event_at - 2.minutes)
+    end
+
+    def last_event
+      events.order(:created_at).first
     end
 
     def working?
@@ -44,8 +49,10 @@ module Agents
       
       #run pipeline for last two days
       dates = [date, date - 1.day]
+      pipelines = []
       result_of_launch = dates.all? do |d|
         offer_result = klass.new(d.to_s, interpolated[:file_name])
+        pipelines.push(offer_result)
         offer_result.launch!
       end
 
@@ -54,7 +61,8 @@ module Agents
         create_event :payload => interpolated.merge(date: date.to_s, status: 'ok')
       else
         # if all pipelins were not sucessfully finished create event with status failure
-        create_event :payload => interpolated.merge(date: date.to_s, status: 'failure')
+        messages = pipelines.map { |pipe| pipe.response.except(:date, :status) }
+        create_event :payload => interpolated.merge(date: date.to_s, status: 'failure', messages: messages)
       end
     end
 
