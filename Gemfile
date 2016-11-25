@@ -72,6 +72,7 @@ gem 'listen', '~> 3.0.5', require: false
 
 gem "bugsnag"
 gem 'byebug'
+gem 'messenger', git: 'git@github.com:turfmedia/messenger-client.git'
 gem 'orchestrator', git: 'git@github.com:sbusso/publisher_task.git'
 # gem 'orchestrator', path: '/Users/valexl/workspace/turfmedia/gems/orchestrator'
 
