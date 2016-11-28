@@ -124,7 +124,7 @@ module Agents
       return false if @processed_dates.include?(date)
 
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
-      pipeline = klass.new(date, options['html_template_id'], options['comcenter_channel_id'], options['comcenter_api_key'])
+      pipeline = klass.new(date, options['html_template_id'], options['comcenter_recurring_id'], options['comcenter_api_key'])
 
       result = pipeline.launch!
       if create_event(payload: pipeline.response.merge(agent_name: self.name), date: date)
