@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: 4b2e60429932f9bfbbcc831b67df866e295aafd8
+  revision: c0341a949da228b3772261f54b746037469f9ee0
   specs:
     orchestrator (2.2.1)
       aws-sdk (~> 2.5.1)
