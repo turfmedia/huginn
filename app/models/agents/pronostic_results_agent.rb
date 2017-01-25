@@ -11,14 +11,20 @@ module Agents
     def default_options
       { 
         file_name: '',
-        pipeline_name: ''
+        data: {
+          pipeline_name: ''
+        }
       }
     end
 
     # check that file_nameare given by user
     def validate_options
-      errors.add(:base, 'file_name is required') unless options['file_name'].present?
       errors.add(:base, 'pipeline_name is required') unless options['pipeline_name'].present?
+      if options['data'].blank?
+        errors.add(:base, 'data is required')
+      else
+        errors.add(:base, 'file_name is required') unless options['data']['file_name'].present?
+      end
     end
 
     def recent_error_logs?
@@ -51,7 +57,7 @@ module Agents
       dates = [date, date - 1.day]
       pipelines = []
       result_of_launch = dates.all? do |d|
-        offer_result = klass.new(d.to_s, interpolated[:file_name])
+        offer_result = klass.new(d.to_s, data: interpolated[:data])
         pipelines.push(offer_result)
         offer_result.launch!
       end

@@ -17,9 +17,11 @@ module Agents
           required: ['js2', 'q2'],
           optional: []
         },
-        html_template_id: '',
-        comcenter_channel_id: '',
-        comcenter_api_key: '',
+        data: {
+          html_template_id: '',
+          comcenter_channel_id: '',
+          comcenter_api_key: '',
+        }
         expected_time_in_hours: 12,
       }
     end

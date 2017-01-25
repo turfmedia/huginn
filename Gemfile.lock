@@ -59,16 +59,6 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: git@github.com:sbusso/publisher_task.git
-  revision: f678485efa37d356837e6805b35f04e17dfc1069
-  specs:
-    orchestrator (2.2.2)
-      aws-sdk (~> 2.5.1)
-      dotenv
-      google_drive (~> 1.0.6)
-      r18n-core
-
-GIT
   remote: git@github.com:turfmedia/messenger-client.git
   revision: 7aa8a6194d1533189c288ca9f0583bdf2c560913
   specs:
@@ -77,6 +67,15 @@ GIT
       hashie (>= 2.0)
       multi_json (>= 1.3)
       rest-client (~> 1.8.0)
+
+PATH
+  remote: /Users/valexl/workspace/turfmedia/gems/orchestrator
+  specs:
+    orchestrator (2.2.2)
+      aws-sdk (~> 2.5.1)
+      dotenv
+      google_drive (~> 1.0.6)
+      r18n-core
 
 PATH
   remote: vendor/gems/dotenv-2.0.1
