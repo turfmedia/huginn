@@ -10,9 +10,11 @@ describe Agents::PublisherTasks do
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
                     packages: { required: ['js2', 'q1'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    },
                     expected_time_in_hours: @expected_time_in_hours # negative means last day
                   }
   end
@@ -133,9 +135,11 @@ describe Agents::PublisherTasks do
                     date: '2016-08-15',
                     pipeline_name: 'Gazette',
                     packages: { required: ['js2', 'q2'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -148,7 +152,7 @@ describe Agents::PublisherTasks do
       end
 
       it 'does not run Orchestrator::Tasks::Pipelines::Gazette if events are blank' do
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
         @checker.receive(@events)
       end
 
@@ -159,7 +163,7 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
         @checker.receive(@events)
       end
 
@@ -176,7 +180,7 @@ describe Agents::PublisherTasks do
         q2_event_again.save!
         @events.push(q2_event_again)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -193,7 +197,7 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -210,7 +214,7 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -229,11 +233,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -253,11 +257,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true }
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -281,11 +285,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true } 
         stub(fake_object).response { {pdf_link: 'pdf_link'} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -295,15 +299,17 @@ describe Agents::PublisherTasks do
       end
     end
 
-    context '#Turfistar::Quinte' do
+    context '#TurfistarQuinte' do
       before do
         @valid_params = {
                     date: '2016-08-15',
-                    pipeline_name: 'Turfistar::Quinte',
+                    pipeline_name: 'TurfistarQuinte',
                     packages: { required: ['q1'], optional: ['Erratum Turfistar Quinte'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -324,7 +330,7 @@ describe Agents::PublisherTasks do
 
         @events.push(q2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -344,7 +350,7 @@ describe Agents::PublisherTasks do
 
         @events.push(q2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -359,7 +365,7 @@ describe Agents::PublisherTasks do
 
         @events.push(erratum_turfistar_quinte_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -373,12 +379,12 @@ describe Agents::PublisherTasks do
 
         @events.push(q1_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Turfistar::Quinte.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -398,11 +404,11 @@ describe Agents::PublisherTasks do
 
         @events.push(erratum_turfistar_quinte_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Turfistar::Quinte.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Quinte).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -411,16 +417,17 @@ describe Agents::PublisherTasks do
 
     end
 
-
-    context '#Turfistar::Simple' do
+    context '#TurfistarSimple' do
       before do
         @valid_params = {
                     date: '2016-08-15',
-                    pipeline_name: 'Turfistar::Simple',
+                    pipeline_name: 'TurfistarSimple',
                     packages: { required: ['js1', 'q1'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -446,7 +453,7 @@ describe Agents::PublisherTasks do
         js1_event.save!
 
         @events.push(js1_event)
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Simple).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]).times(0)
+        stub(Orchestrator::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
@@ -466,12 +473,12 @@ describe Agents::PublisherTasks do
 
         @events.push(q1_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Turfistar::Simple.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
 
-        stub(Orchestrator::Tasks::Pipelines::Turfistar::Simple).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -479,15 +486,17 @@ describe Agents::PublisherTasks do
 
     end
 
-    context 'MiT CG' do
+    context 'MiTCG' do
       before do
         @valid_params = {
                     date: '2016-10-06',
-                    pipeline_name: 'MIT::CG',
+                    pipeline_name: 'MITCG',
                     packages: { required: ['mit_cg'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -498,7 +507,7 @@ describe Agents::PublisherTasks do
         @webhook.save!
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MIT::CG if received 2 events and first is not from MiT::CG' do
+      it 'runs Orchestrator::Tasks::Pipelines::MITCG if received 2 events and first is not from MiTCG' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -510,26 +519,28 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event]
 
-        fake_object = Orchestrator::Tasks::Pipelines::MIT::CG.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::MITCG.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MIT::CG).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::MITCG).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
       end
     end
 
-    context 'MiT CDJ' do
+    context 'MiTCDJ' do
       before do
         @valid_params = {
                     date: '2016-10-06',
-                    pipeline_name: 'MIT::CDJ',
+                    pipeline_name: 'MITCDJ',
                     packages: { required: ['mit_cdj'] },
-                    html_template_id: 'html_template_id',
-                    comcenter_channel_id: 'comcenter_channel_id',
-                    comcenter_api_key: 'comcenter_api_key',
+                    data: {
+                      'html_template_id' => 'html_template_id',
+                      'comcenter_channel_id' => 'comcenter_channel_id',
+                      'comcenter_api_key' => 'comcenter_api_key',
+                    }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
         @checker.user = users(:jane)
@@ -540,7 +551,7 @@ describe Agents::PublisherTasks do
         @webhook.save!
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MIT::CDJ only once if received 3 events and the first and the last are from MiT::CDJ but for same date' do
+      it 'runs Orchestrator::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for same date' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -557,17 +568,17 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
 
-        fake_object = Orchestrator::Tasks::Pipelines::MIT::CDJ.new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object = Orchestrator::Tasks::Pipelines::MITCDJ.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new(@valid_params[:date], @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MIT::CDJ only once if received 3 events and the first and the last are from MiT::CDJ but for different date' do
+      it 'runs Orchestrator::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for different date' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -584,20 +595,20 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
 
-        fake_object1 = Orchestrator::Tasks::Pipelines::MIT::CDJ.new('2016-10-06', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object1 = Orchestrator::Tasks::Pipelines::MITCDJ.new('2016-10-06', data: @valid_params[:data])
         stub(fake_object1).launch!{ true }.times(1)
         stub(fake_object1).response { {} }
 
 
-        fake_object2 = Orchestrator::Tasks::Pipelines::MIT::CDJ.new('2016-10-07', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key])
+        fake_object2 = Orchestrator::Tasks::Pipelines::MITCDJ.new('2016-10-07', data: @valid_params[:data])
         stub(fake_object2).launch!{ true }.times(1)
         stub(fake_object2).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new('2016-10-07', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new('2016-10-07', data: @valid_params[:data]) do
           fake_object2
         end
 
-        stub(Orchestrator::Tasks::Pipelines::MIT::CDJ).new('2016-10-06', @valid_params[:html_template_id], @valid_params[:comcenter_channel_id], @valid_params[:comcenter_api_key]) do
+        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new('2016-10-06', data: @valid_params[:data]) do
           fake_object1
         end
         @checker.receive(@events)

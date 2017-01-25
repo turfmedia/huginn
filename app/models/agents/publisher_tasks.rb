@@ -36,10 +36,13 @@ module Agents
       else
         errors.add(:base, 'required packages can not be blank') unless options['packages']['required'].present?
       end
-      
-      errors.add(:base, 'html_template_id is required') unless options['html_template_id'].present?
-      errors.add(:base, 'comcenter_channel_id is required') unless options['comcenter_channel_id'].present?
-      errors.add(:base, 'comcenter_api_key is required') unless options['comcenter_api_key'].present?
+      if options['data'].blank?
+        errors.add(:base, 'required data can not be blank')
+      else
+        errors.add(:base, 'html_template_id is required') unless options['data']['html_template_id'].present?
+        errors.add(:base, 'comcenter_channel_id is required') unless options['data']['comcenter_channel_id'].present?
+        errors.add(:base, 'comcenter_api_key is required') unless options['data']['comcenter_api_key'].present?
+      end
     end
 
     # @return [Array] list of all available packages from options
@@ -124,7 +127,7 @@ module Agents
       return false if @processed_dates.include?(date)
 
       klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
-      pipeline = klass.new(date, options['html_template_id'], options['comcenter_recurring_id'], options['comcenter_api_key'])
+      pipeline = klass.new(date, data: options['data'])
 
       result = pipeline.launch!
       if create_event(payload: pipeline.response.merge(agent_name: self.name), date: date)
