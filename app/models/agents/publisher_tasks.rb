@@ -21,7 +21,7 @@ module Agents
           html_template_id: '',
           comcenter_channel_id: '',
           comcenter_api_key: '',
-        }
+        },
         expected_time_in_hours: 12,
       }
     end

@@ -20,9 +20,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       @agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -93,9 +95,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -110,9 +114,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -129,9 +135,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -154,9 +162,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -178,9 +188,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -196,9 +208,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -214,9 +228,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
@@ -234,9 +250,11 @@ describe Agents::AgentsStatus do
                 date: '2016-08-15',
                 pipeline_name: 'Gazette',
                 packages: { required: ['js2', 'q1'] },
-                html_template_id: 'html_template_id',
-                comcenter_channel_id: 'comcenter_channel_id',
-                comcenter_api_key: 'comcenter_api_key',
+                data: {
+                  html_template_id: 'html_template_id',
+                  comcenter_channel_id: 'comcenter_channel_id',
+                  comcenter_api_key: 'comcenter_api_key',
+                },
                 expected_update_period_in_days: 1
               }
       agent = Agents::PublisherTasks.new(:name => "Gazette", :options => options)
