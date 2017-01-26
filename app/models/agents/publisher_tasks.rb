@@ -19,7 +19,7 @@ module Agents
         },
         data: {
           html_template_id: '',
-          comcenter_recurring_id: '',
+          messenger_recurring_id: '',
           messenger_api_key: '',
         },
         expected_time_in_hours: 12,
@@ -42,7 +42,7 @@ module Agents
         errors.add(:base, 'required data can not be blank')
       else
         errors.add(:base, 'html_template_id is required') unless options['data']['html_template_id'].present?
-        errors.add(:base, 'comcenter_recurring_id is required') unless options['data']['comcenter_recurring_id'].present?
+        errors.add(:base, 'messenger_recurring_id is required') unless options['data']['messenger_recurring_id'].present?
         errors.add(:base, 'messenger_api_key is required') unless options['data']['messenger_api_key'].present?
       end
     end

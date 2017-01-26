@@ -22,8 +22,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -97,8 +97,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -116,8 +116,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -137,8 +137,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -164,8 +164,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -190,8 +190,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -210,8 +210,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -230,8 +230,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }
@@ -252,8 +252,8 @@ describe Agents::AgentsStatus do
                 packages: { required: ['js2', 'q1'] },
                 data: {
                   html_template_id: 'html_template_id',
-                  comcenter_channel_id: 'comcenter_channel_id',
-                  comcenter_api_key: 'comcenter_api_key',
+                  messenger_recurring_id: 'messenger_recurring_id',
+                  messenger_api_key: 'messenger_api_key',
                 },
                 expected_update_period_in_days: 1
               }

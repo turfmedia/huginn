@@ -12,8 +12,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['js2', 'q1'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     },
                     expected_time_in_hours: @expected_time_in_hours # negative means last day
                   }
@@ -137,8 +137,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['js2', 'q2'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
@@ -307,8 +307,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['q1'], optional: ['Erratum Turfistar Quinte'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
@@ -425,8 +425,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['js1', 'q1'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
@@ -494,8 +494,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['mit_cg'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
@@ -538,8 +538,8 @@ describe Agents::PublisherTasks do
                     packages: { required: ['mit_cdj'] },
                     data: {
                       'html_template_id' => 'html_template_id',
-                      'comcenter_channel_id' => 'comcenter_channel_id',
-                      'comcenter_api_key' => 'comcenter_api_key',
+                      'messenger_recurring_id' => 'messenger_recurring_id',
+                      'messenger_api_key' => 'messenger_api_key',
                     }
                   }
         @checker = Agents::PublisherTasks.new(:name => "somename", :options => @valid_params)
