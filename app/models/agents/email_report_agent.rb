@@ -9,9 +9,6 @@ module Agents
     description <<-MD
       The Email Report Agent sends reports from http://reporter.services.turfmedia.com/.
 
-      You can specify the email's subject line by providing a `subject` option, which can contain Liquid formatting.  E.g.,
-      you could provide `"Huginn email"` to set a simple subject, or `{{subject}}` to use the `subject` key from the incoming Event.
-
       By default, the email body will contain an optional `headline`, followed by a listing of the Events' keys.
 
       You can specify one or more `recipients` for the email, or skip the option in order to send the email to your
@@ -29,7 +26,6 @@ module Agents
 
     def default_options
       {
-        'subject' => "Report",
         'headline' => "Your reports:",
         'expected_receive_period_in_days' => "2",
         "from" => "",
@@ -67,7 +63,7 @@ module Agents
             SystemMailer.send_message(
               to: recipient,
               from: interpolated['from'],
-              subject: interpolated['subject'],
+              subject: "Report for #{Date.yesterday.to_s}",
               headline: interpolated['headline'],
               body: pipeline.mail_body.html_safe,
               content_type: "text/html",
