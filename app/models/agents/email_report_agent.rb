@@ -7,7 +7,7 @@ module Agents
     default_schedule "never"
 
     description <<-MD
-      The Email Report Agent sends reports from http://reporter.services.turfmedia.com/ for yesterday, last-7-days and last-30-dyas periods.
+      The Email Report Agent sends reports from http://reporter.services.turfmedia.com/.
 
       You can specify the email's subject line by providing a `subject` option, which can contain Liquid formatting.  E.g.,
       you could provide `"Huginn email"` to set a simple subject, or `{{subject}}` to use the `subject` key from the incoming Event.
@@ -32,7 +32,6 @@ module Agents
         'subject' => "Report",
         'headline' => "Your reports:",
         'expected_receive_period_in_days' => "2",
-        "period" => "",
         "from" => "",
         "recipients" => [],
         "data" => {
@@ -59,7 +58,7 @@ module Agents
     end
 
     def check
-      pipeline = Orchestrator::Tasks::Pipelines::Reporter::Statistics.new interpolated["period"], data: interpolated["data"]
+      pipeline = Orchestrator::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
       if res = pipeline.launch!
         recipients = interpolated['recipients']
         recipients = [recipients] unless recipients.instance_of?(Array)
