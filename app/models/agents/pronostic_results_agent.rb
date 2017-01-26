@@ -10,9 +10,9 @@ module Agents
 
     def default_options
       { 
-        file_name: '',
+        pipeline_name: '',
         data: {
-          pipeline_name: ''
+          file_name: ''
         }
       }
     end
@@ -28,6 +28,7 @@ module Agents
     end
 
     def recent_error_logs?
+      return true if last_event.blank?
       return true if last_event_at.blank? && last_error_log_at
       return true if last_event.payload[:status] == "failure"
       last_event_at && last_error_log_at && last_error_log_at > (last_event_at - 2.minutes)
