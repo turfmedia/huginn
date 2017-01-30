@@ -63,7 +63,7 @@ module Agents
             SystemMailer.send_message(
               to: recipient,
               from: interpolated['from'],
-              subject: "Report for #{Date.yesterday.to_s}",
+              subject: "Report for #{Date.yesterday.strftime('%d %b')}",
               headline: interpolated['headline'],
               body: pipeline.mail_body.html_safe,
               content_type: "text/html",
