@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: 35baa2e65816bd654594d666ae7fd267d715e62b
+  revision: d609bc3856155a845f781ef67006ad099c331fa9
   specs:
-    orchestrator (2.3.4)
+    publisher_task (2.3.4)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
@@ -687,12 +687,12 @@ DEPENDENCIES
   omniauth-tumblr
   omniauth-twitter
   omniauth-wunderlist!
-  orchestrator!
   pg (~> 0.18.3)
   poltergeist
   protected_attributes (~> 1.0.8)
   pry-byebug
   pry-rails
+  publisher_task!
   quiet_assets
   rack (> 1.5.0)
   rack-livereload (~> 0.3.16)

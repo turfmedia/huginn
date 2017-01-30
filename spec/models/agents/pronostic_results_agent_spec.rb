@@ -23,13 +23,13 @@ describe Agents::PronosticResultsAgent do
     describe "#check" do
       context 'with not blank date' do
         before do
-          fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+          fake_object = PublisherTask::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
           stub(fake_object).launch! { true } 
 
-          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
+          stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
             fake_object
           end
-          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+          stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
             fake_object
           end
         end
@@ -38,13 +38,13 @@ describe Agents::PronosticResultsAgent do
           expect { @checker.check }.to change { Event.count }.by(1)
         end
 
-        it "runs Orchestrator::Tasks::Pipelines::Results::Gazette pipeline with given data if this date present" do
-          fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+        it "runs PublisherTask::Tasks::Pipelines::Results::Gazette pipeline with given data if this date present" do
+          fake_object = PublisherTask::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
           stub(fake_object).launch!{ true }.times(2)
-          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
+          stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
             fake_object
           end
-          stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+          stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
             fake_object
           end
 
@@ -52,14 +52,14 @@ describe Agents::PronosticResultsAgent do
         end
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::Results::Gazette pipeline for yesterday if given date is blank' do
-        fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(Date.yesterday.to_s, data: @valid_params[:data])
+      it 'runs PublisherTask::Tasks::Pipelines::Results::Gazette pipeline for yesterday if given date is blank' do
+        fake_object = PublisherTask::Tasks::Pipelines::Results::Gazette.new(Date.yesterday.to_s, data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(2)
 
-        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((Date.yesterday - 1.day).to_s, data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new((Date.yesterday - 1.day).to_s, data: @valid_params[:data]) do
           fake_object
         end
-        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(Date.yesterday.to_s, data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new(Date.yesterday.to_s, data: @valid_params[:data]) do
           fake_object
         end
 
@@ -74,12 +74,12 @@ describe Agents::PronosticResultsAgent do
 
     describe "#working?" do
       it "returns true if valid data" do
-        fake_object = Orchestrator::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Results::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true } 
-        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
           fake_object
         end
-        stub(Orchestrator::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -106,12 +106,12 @@ describe Agents::PronosticResultsAgent do
 
     describe "#check" do
       before do
-        fake_object = Orchestrator::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true } 
-        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
           fake_object
         end
-        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
       end
@@ -124,13 +124,13 @@ describe Agents::PronosticResultsAgent do
 
     describe "#working?" do
       it "returns true if valid data" do
-        fake_object = Orchestrator::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Results::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true } 
 
-        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::TurfistarSimple).new((@valid_params[:date].to_date - 1.day).to_s, data: @valid_params[:data]) do
           fake_object
         end
-        stub(Orchestrator::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Results::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 

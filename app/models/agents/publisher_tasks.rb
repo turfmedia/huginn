@@ -92,7 +92,7 @@ module Agents
       Time.now <= expected_time
     end
 
-    # Launch Orchestrator::Tasks::Pipelines::#{options.pipeline}.
+    # Launch PublisherTask::Tasks::Pipelines::#{options.pipeline}.
     # It does nothing if either incoming_events are blank or there are not any information about another package or we have information about other packages but for another date.
     # It runs pipeline if today we get all packages from options[:packages][:required] (js2, q2 for example) from publisher api for the same date.
     # It runs pipeline if today we get all packages from options[:packages][:required] (js2, q2 for example) and given package is from optional pacakges (Erratum for example) from publisher api for the same date.
@@ -128,7 +128,7 @@ module Agents
       
       return false if @processed_dates.include?(date)
 
-      klass    = "Orchestrator::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
+      klass    = "PublisherTask::Tasks::Pipelines::#{self.options[:pipeline_name]}".constantize
       pipeline = klass.new(date, data: options['data'])
 
       result = pipeline.launch!

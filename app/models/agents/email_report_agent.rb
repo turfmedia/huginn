@@ -54,7 +54,8 @@ module Agents
     end
 
     def check
-      pipeline = Orchestrator::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
+      pipeline = PublisherTask::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
+
       if res = pipeline.launch!
         recipients = interpolated['recipients']
         recipients = [recipients] unless recipients.instance_of?(Array)

@@ -30,9 +30,5 @@ describe Agents::EmailReportAgent, :vcr do
       expect { @checker.check }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'sends email with correct params' do
-
-    end
-
   end
 end

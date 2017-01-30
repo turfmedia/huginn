@@ -151,23 +151,23 @@ describe Agents::PublisherTasks do
         @events = []
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Gazette if events are blank' do
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+      it 'does not run PublisherTask::Tasks::Pipelines::Gazette if events are blank' do
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
         @checker.receive(@events)
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Gazette if given events is a first event from publisher/api' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Gazette if given events is a first event from publisher/api' do
         js2_event = Event.new payload: { date: '2016-08-15', package_type: 'js1'}
         js2_event.agent = @webhook
         js2_event.user  = @webhook.user
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
         @checker.receive(@events)
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Gazette if given events is a first event from publisher/api if all events before and current events are from the same package' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Gazette if given events is a first event from publisher/api if all events before and current events are from the same package' do
         q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q2'}
 
         q2_event.agent = @webhook
@@ -180,12 +180,12 @@ describe Agents::PublisherTasks do
         q2_event_again.save!
         @events.push(q2_event_again)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Gazette if given events is a second event from publisher/api and they both from different packages but the first was yestreday the second was today' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Gazette if given events is a second event from publisher/api and they both from different packages but the first was yestreday the second was today' do
         q2_event = Event.new payload: { date: '2016-08-14', package_type: 'q2'}
         q2_event.agent = @webhook
         q2_event.user  = @webhook.user
@@ -197,12 +197,12 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Gazette if given events from other package' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Gazette if given events from other package' do
         q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
         q2_event.agent = @webhook
         q2_event.user  = @webhook.user
@@ -214,12 +214,12 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::Gazette if given events is a second event from publisher/api and they both from different packages' do
+      it 'runs PublisherTask::Tasks::Pipelines::Gazette if given events is a second event from publisher/api and they both from different packages' do
         q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q2'}
         
         q2_event.agent = @webhook
@@ -233,11 +233,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -257,11 +257,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true }
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -285,11 +285,11 @@ describe Agents::PublisherTasks do
         js2_event.save!
         @events.push(js2_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::Gazette.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch! { true } 
         stub(fake_object).response { {pdf_link: 'pdf_link'} }
 
-        stub(Orchestrator::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::Gazette).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -321,7 +321,7 @@ describe Agents::PublisherTasks do
         @events = []
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Quinte if given event is not from q1 package' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Quinte if given event is not from q1 package' do
         q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q2'}
 
         q2_event.agent = @webhook
@@ -330,12 +330,12 @@ describe Agents::PublisherTasks do
 
         @events.push(q2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Quinte if given event is not from q1 package and before we received q1 package' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Quinte if given event is not from q1 package and before we received q1 package' do
         q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
 
         q1_event.agent = @webhook
@@ -350,13 +350,13 @@ describe Agents::PublisherTasks do
 
         @events.push(q2_event)
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we do not receive any q1 packages' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we do not receive any q1 packages' do
         erratum_turfistar_quinte_event = Event.new payload: { date: '2016-08-15', package_type: 'Erratum Turfistar Quinte'}
 
         erratum_turfistar_quinte_event.agent = @webhook
@@ -365,12 +365,12 @@ describe Agents::PublisherTasks do
 
         @events.push(erratum_turfistar_quinte_event)
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::Quinte if given event is from q1 package' do
+      it 'runs PublisherTask::Tasks::Pipelines::Quinte if given event is from q1 package' do
         q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
 
         q1_event.agent = @webhook
@@ -379,18 +379,18 @@ describe Agents::PublisherTasks do
 
         @events.push(q1_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we received q1 package before' do
+      it 'runs PublisherTask::Tasks::Pipelines::Quinte if given event is from Erratum Turfistar Quinte package and we received q1 package before' do
         q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
         q1_event.agent = @webhook
         q1_event.user  = @webhook.user
@@ -404,11 +404,11 @@ describe Agents::PublisherTasks do
 
         @events.push(erratum_turfistar_quinte_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::TurfistarQuinte.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::TurfistarQuinte).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
 
@@ -439,7 +439,7 @@ describe Agents::PublisherTasks do
         @events = []
       end
 
-      it 'does not run Orchestrator::Tasks::Pipelines::Simple if given events are not from q1 and js1 packages' do
+      it 'does not run PublisherTask::Tasks::Pipelines::Simple if given events are not from q1 and js1 packages' do
         q2_event = Event.new payload: { date: '2016-08-15', package_type: 'q2'}
 
         q2_event.agent = @webhook
@@ -453,12 +453,12 @@ describe Agents::PublisherTasks do
         js1_event.save!
 
         @events.push(js1_event)
-        stub(Orchestrator::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]).times(0)
+        stub(PublisherTask::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]).times(0)
 
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::Simple if given events are from q1 and js1 packages' do
+      it 'runs PublisherTask::Tasks::Pipelines::Simple if given events are from q1 and js1 packages' do
         q1_event = Event.new payload: { date: '2016-08-15', package_type: 'q1'}
 
         q1_event.agent = @webhook
@@ -473,12 +473,12 @@ describe Agents::PublisherTasks do
 
         @events.push(q1_event)
 
-        fake_object = Orchestrator::Tasks::Pipelines::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::TurfistarSimple.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
 
-        stub(Orchestrator::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::TurfistarSimple).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -507,7 +507,7 @@ describe Agents::PublisherTasks do
         @webhook.save!
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MITCG if received 2 events and first is not from MiTCG' do
+      it 'runs PublisherTask::Tasks::Pipelines::MITCG if received 2 events and first is not from MiTCG' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -519,11 +519,11 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event]
 
-        fake_object = Orchestrator::Tasks::Pipelines::MITCG.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::MITCG.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MITCG).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::MITCG).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
@@ -551,7 +551,7 @@ describe Agents::PublisherTasks do
         @webhook.save!
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for same date' do
+      it 'runs PublisherTask::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for same date' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -568,17 +568,17 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
 
-        fake_object = Orchestrator::Tasks::Pipelines::MITCDJ.new(@valid_params[:date], data: @valid_params[:data])
+        fake_object = PublisherTask::Tasks::Pipelines::MITCDJ.new(@valid_params[:date], data: @valid_params[:data])
         stub(fake_object).launch!{ true }.times(1)
         stub(fake_object).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new(@valid_params[:date], data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::MITCDJ).new(@valid_params[:date], data: @valid_params[:data]) do
           fake_object
         end
         @checker.receive(@events)
       end
 
-      it 'runs Orchestrator::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for different date' do
+      it 'runs PublisherTask::Tasks::Pipelines::MITCDJ only once if received 3 events and the first and the last are from MiTCDJ but for different date' do
         mit_cdj_event = Event.new payload: {"date"=>"2016-10-06", "package_type"=>"mit_cdj"}
         mit_cdj_event.agent = @webhook
         mit_cdj_event.user  = @webhook.user
@@ -595,20 +595,20 @@ describe Agents::PublisherTasks do
 
         @events = [mit_cdj_event, mit_cg_event, mit_cdj_event2]
 
-        fake_object1 = Orchestrator::Tasks::Pipelines::MITCDJ.new('2016-10-06', data: @valid_params[:data])
+        fake_object1 = PublisherTask::Tasks::Pipelines::MITCDJ.new('2016-10-06', data: @valid_params[:data])
         stub(fake_object1).launch!{ true }.times(1)
         stub(fake_object1).response { {} }
 
 
-        fake_object2 = Orchestrator::Tasks::Pipelines::MITCDJ.new('2016-10-07', data: @valid_params[:data])
+        fake_object2 = PublisherTask::Tasks::Pipelines::MITCDJ.new('2016-10-07', data: @valid_params[:data])
         stub(fake_object2).launch!{ true }.times(1)
         stub(fake_object2).response { {} }
 
-        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new('2016-10-07', data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::MITCDJ).new('2016-10-07', data: @valid_params[:data]) do
           fake_object2
         end
 
-        stub(Orchestrator::Tasks::Pipelines::MITCDJ).new('2016-10-06', data: @valid_params[:data]) do
+        stub(PublisherTask::Tasks::Pipelines::MITCDJ).new('2016-10-06', data: @valid_params[:data]) do
           fake_object1
         end
         @checker.receive(@events)
