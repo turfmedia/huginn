@@ -1,7 +1,5 @@
 module Agents
   class EmailReportAgent < Agent
-    include EmailConcern
-
     can_dry_run! #it gives run agent manually via /agents/:agent_id/dry_runs
     cannot_receive_events! 
     default_schedule "never"
@@ -26,10 +24,6 @@ module Agents
 
     def default_options
       {
-        'headline' => "Your reports:",
-        'expected_receive_period_in_days' => "2",
-        "from" => "",
-        "recipients" => [],
         "data" => {
           "html_template_id" => ""
         }
@@ -39,8 +33,6 @@ module Agents
 
     # check that file_nameare given by user
     def validate_options
-      errors.add(:base, 'recipients is required') unless options['recipients'].present?
-      errors.add(:base, 'from is required') unless options['from'].present?
       if options['data'].blank?
         errors.add(:base, 'data is required')
       else
@@ -57,25 +49,7 @@ module Agents
 
     def check
       pipeline = PublisherTask::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
-      if res = pipeline.launch!
-        recipients = interpolated['recipients']
-        recipients = [recipients] unless recipients.instance_of?(Array)
-        recipients.each do |recipient|
-          begin
-            SystemMailer.send_message(
-              to: recipient,
-              from: interpolated['from'],
-              subject: "Report for #{Date.yesterday.strftime('%d %b')}",
-              headline: interpolated['headline'],
-              body: pipeline.mail_body.html_safe,
-              content_type: "text/html",
-            ).deliver_now
-            log "Sent mail to #{recipient}"
-          rescue => e
-            error("Error sending mail to #{recipient}: #{e.message}")
-            raise
-          end
-        end        
+      if pipeline.launch!
         event = create_event(:payload => interpolated)
       end
     end
