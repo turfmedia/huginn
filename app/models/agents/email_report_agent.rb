@@ -45,6 +45,8 @@ module Agents
         errors.add(:base, 'data is required')
       else
         errors.add(:base, 'html_template_id is required') unless options['data']['html_template_id'].present?
+        errors.add(:base, 'messenger_recurring_id is required') unless options['data']['messenger_recurring_id'].present?
+        errors.add(:base, 'messenger_api_key is required') unless options['data']['messenger_api_key'].present?
       end
     end
 
@@ -55,7 +57,6 @@ module Agents
 
     def check
       pipeline = PublisherTask::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
-
       if res = pipeline.launch!
         recipients = interpolated['recipients']
         recipients = [recipients] unless recipients.instance_of?(Array)

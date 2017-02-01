@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: d609bc3856155a845f781ef67006ad099c331fa9
+  revision: 69dfb1576a5bcc0ebfa3756ef5904ffa261f03a5
   specs:
-    publisher_task (2.3.4)
+    publisher_task (2.3.5)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
