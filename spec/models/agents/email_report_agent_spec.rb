@@ -4,6 +4,7 @@ describe Agents::EmailReportAgent, :vcr do
   let(:valid_params) do
     {
       expected_receive_period_in_days: "2",
+      expected_time_in_hours: (Time.now - 1.hour).hour,
       data: {
         "html_template_id" => 'd4d96b15cd78461ce894',
         "messenger_recurring_id" => '8a52f53a06cf4a90',
@@ -42,4 +43,36 @@ describe Agents::EmailReportAgent, :vcr do
     end
 
   end
+
+  describe "#working?" do
+    it "returns true if last event is success" do
+      @checker.create_event(payload: { date: Date.today, status: "ok" }, date: Date.today)
+      expect(@checker.reload).to be_working
+    end
+
+    it "returns false if last event is failure" do
+      @checker.create_event(payload: { date: Date.today, status: "failure" })
+      expect(@checker.reload).not_to be_working
+    end
+
+    it "should be sent today in time less then #{Time.now.hour} hours (returns true if yes)" do
+      event = @checker.create_event(payload: { date: Date.today, status: "ok" })
+      event.update_column :date, Date.today
+      expect(@checker.reload).to be_working
+    end
+    
+    it "should be sent today in time less then #{Time.now.hour} hours (returns false if not)" do
+      event = @checker.create_event(payload: { date: Date.yesterday, status: "ok" })
+      event.update_column :date, Date.yesterday
+      expect(@checker.reload).not_to be_working
+    end
+
+    it "should be sent today in time less then #{Time.now.hour} hours (returns false if yes but failure)" do
+      event = @checker.create_event(payload: { date: Date.today, status: "failure" })
+      event.update_column :date, Date.today
+      expect(@checker.reload).not_to be_working
+    end
+
+  end
+
 end

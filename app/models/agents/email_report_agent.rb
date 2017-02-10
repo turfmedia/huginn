@@ -1,5 +1,7 @@
 module Agents
   class EmailReportAgent < Agent
+    include PublisherTasksConcern
+
     can_dry_run! #it gives run agent manually via /agents/:agent_id/dry_runs
     cannot_receive_events! 
     default_schedule "never"
@@ -40,11 +42,6 @@ module Agents
         errors.add(:base, 'messenger_recurring_id is required') unless options['data']['messenger_recurring_id'].present?
         errors.add(:base, 'messenger_api_key is required') unless options['data']['messenger_api_key'].present?
       end
-    end
-
-
-    def working?
-      received_event_without_error?
     end
 
     def check
