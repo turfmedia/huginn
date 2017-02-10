@@ -47,7 +47,7 @@ module Agents
     def check
       pipeline = PublisherTask::Tasks::Pipelines::Reporter::Statistics.new Date.yesterday.to_s, data: interpolated["data"]
       if pipeline.launch!
-        event = create_event(:payload => interpolated)
+        event = create_event(payload: pipeline.response.merge(agent_name: self.name), date: Date.today.to_s)
       end
     end
   end
