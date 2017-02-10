@@ -9,7 +9,6 @@ module Agents
       The PublisherAgent creates an event for sending emails with La Gazette Turf to users.
     MD
 
-    attr_accessor :reason_not_working
 
     def default_options
       { 

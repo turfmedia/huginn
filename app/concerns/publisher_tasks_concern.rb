@@ -1,7 +1,15 @@
 module PublisherTasksConcern
+  attr_accessor :reason_not_working
+
   def working?
-    return false if last_check_at && !checked_without_error?
-    return false if events.order(:created_at).count.zero?
+    if last_check_at && !checked_without_error?
+      @reason_not_working = 'Something happens with huggin agent'
+      return false 
+    end
+    if events.order(:created_at).count.zero?
+      @reason_not_working = 'This agent does not have any events yet (perhaps it is new agent)'
+      return false 
+    end
     if options[:expected_time_in_hours].present?
       unless event_created_within?(options[:expected_time_in_hours].to_s.gsub(/\s+/, '').to_i)
         @reason_not_working = "Last package was sent a long time ago"
