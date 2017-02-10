@@ -28,8 +28,8 @@ module Agents
       {
         "data" => {
           "html_template_id" => ""
-        }
-
+        },
+        "expected_time_in_hours" => 2,
       }   
     end
 
