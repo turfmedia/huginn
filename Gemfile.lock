@@ -60,9 +60,9 @@ GIT
 
 GIT
   remote: git@github.com:sbusso/publisher_task.git
-  revision: a510cc8ee2450c48811b89bdb6211734bdf38c82
+  revision: 59420be2637c57709bdd9a4b020410b73a1d742f
   specs:
-    publisher_task (2.3.5)
+    publisher_task (2.4.0)
       aws-sdk (~> 2.5.1)
       dotenv
       google_drive (~> 1.0.6)
@@ -325,12 +325,12 @@ GEM
     hypdf (1.0.10)
       httmultiparty (~> 0.3)
       httparty (~> 0.13)
-    i18n (0.7.0)
+    i18n (0.8.1)
     jmespath (1.3.1)
     jquery-rails (3.1.3)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.3)
+    json (1.8.6)
     jsonpathv2 (0.0.3)
       multi_json
     jwt (1.5.6)
@@ -371,7 +371,7 @@ GEM
     mimemagic (0.3.1)
     mini_magick (4.2.3)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.10.1)
     mqtt (0.3.1)
     multi_json (1.12.1)
     multi_xml (0.6.0)
@@ -580,7 +580,7 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.5)
     tins (1.10.1)
     treetop (1.5.3)
@@ -602,7 +602,7 @@ GEM
       simple_oauth (~> 0.3.0)
     typhoeus (0.6.9)
       ethon (>= 0.7.1)
-    tzinfo (1.2.2)
+    tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
       execjs (>= 0.3.0)
