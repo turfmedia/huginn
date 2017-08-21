@@ -70,8 +70,8 @@ If you just want to play around, you can simply fork this repository, then perfo
 * Read the [wiki][wiki] for usage examples and to get started making new Agents.
 * Periodically run `git fetch upstream` and then `git checkout master && git merge upstream/master` to merge in the newest version of Huginn.
 
-Note: By default, emails are intercepted in the `development` Rails environment, which is what you just setup.  You can view 
-them at [http://localhost:3000/letter_opener](http://localhost:3000/letter_opener). If you'd like to send real emails via SMTP when playing 
+Note: By default, emails are intercepted in the `development` Rails environment, which is what you just setup.  You can view
+them at [http://localhost:3000/letter_opener](http://localhost:3000/letter_opener). If you'd like to send real emails via SMTP when playing
 with Huginn locally, set `SEND_EMAIL_IN_DEVELOPMENT` to `true` in your `.env` file.
 
 If you need more detailed instructions, see the [Novice setup guide][novice-setup-guide].
@@ -79,6 +79,10 @@ If you need more detailed instructions, see the [Novice setup guide][novice-setu
 [localhost]: http://localhost:3000/
 [wiki]: https://github.com/cantino/huginn/wiki
 [novice-setup-guide]: https://github.com/cantino/huginn/wiki/Novice-setup-guide
+
+
+  gem install eventmachine -v '1.0.7' -- --with-cppflags=-I/usr/local/opt/openssl/include
+  gem install libv8 -v '3.16.14.13' -- --with-system-v8
 
 ### Nitrous Quickstart
 
@@ -92,13 +96,13 @@ In the IDE, start Huginn via `Run > Start Huginn` and access your site via `Prev
 
 ### Develop
 
-All agents have specs! And there's also acceptance tests that simulate running Huginn in a headless browser. 
+All agents have specs! And there's also acceptance tests that simulate running Huginn in a headless browser.
 
-* Install PhantomJS 2.1.1 or greater: 
-  * Using [Node Package Manager](https://www.npmjs.com/): `npm install phantomjs` 
+* Install PhantomJS 2.1.1 or greater:
+  * Using [Node Package Manager](https://www.npmjs.com/): `npm install phantomjs`
   * Using [Homebrew](http://brew.sh/) on OSX `brew install phantomjs`
 * Run all specs with `bundle exec rspec`
-* Run a specific spec with `bundle exec rspec path/to/specific/test_spec.rb`. 
+* Run a specific spec with `bundle exec rspec path/to/specific/test_spec.rb`.
 * Read more about rspec for rails [here](https://github.com/rspec/rspec-rails).
 
 ## Deployment
