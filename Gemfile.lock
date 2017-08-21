@@ -70,7 +70,7 @@ GIT
 
 GIT
   remote: git@github.com:turfmedia/publisher_task.git
-  revision: f6a52140d45c81d3047892f3fe00e43328189d1b
+  revision: b32ba8f770b7cffb2cb7d6789b7bff709968007d
   specs:
     publisher_task (2.5.2)
       aws-sdk (~> 2.5.1)
